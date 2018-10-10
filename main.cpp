@@ -46,144 +46,18 @@ void testRandomArr()
 
     std::cout << std::endl;
 
-    int* testInsert = SortTestHelper::copyArray(testSelect, testLength);
-    int* testBubble = SortTestHelper::copyArray(testSelect, testLength);
-    int* testMerge = SortTestHelper::copyArray(testSelect, testLength);
-    int* testMergeBU = SortTestHelper::copyArray(testSelect, testLength);
-    int* testQuick = SortTestHelper::copyArray(testSelect, testLength);
-    int* testQuick2 = SortTestHelper::copyArray(testSelect, testLength);
-    int* testQuick3 = SortTestHelper::copyArray(testSelect, testLength);
-    int* testHeap1 = SortTestHelper::copyArray(testSelect, testLength);
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, BasicSort::selectSort<int>, "selectSort");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, BasicSort::insertSort<int>, "insertSort");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, BasicSort::bubbleSort<int>, "testBubble");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, AdvancedSort::mergeSort<int>, "mergeSort");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, AdvancedSort::mergeSortBU<int>, "mergeSortBU");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, AdvancedSort::quickSort<int>, "quickSort");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, AdvancedSort::quickSort2<int>, "quickSort2");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, AdvancedSort::quickSort3<int>, "quickSort3");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort1<int>, "heapSort1");
 
-    std::cout << std::endl;
-
-    //-----------------------------------------//
-
-    int clockCount = ToolUtil::funNClock<std::chrono::microseconds>(BasicSort::selectSort<int>, testSelect, testLength);
-
-    std::cout << "selectSort microseconds is " << clockCount << std::endl;
-
-    for (int i = 0; i < 100; ++i)
-    {
-        std::cout << testSelect[i] << " ";
-    }
-
-    std::cout << std::endl;
-
-    //-----------------------------------------//
-
-    clockCount = ToolUtil::funNClock<std::chrono::microseconds>(BasicSort::insertSort<int>, testInsert, testLength);
-
-    std::cout << "insertSort microseconds is " << clockCount << std::endl;
-
-    for (int i = 0; i < 100; ++i)
-    {
-        std::cout << testInsert[i] << " ";
-    }
-
-    std::cout << std::endl;
-
-    //-----------------------------------------//
-
-    clockCount = ToolUtil::funNClock<std::chrono::microseconds>(BasicSort::bubbleSort<int>, testBubble, testLength);
-
-    std::cout << "bubbleSort microseconds is " << clockCount << std::endl;
-
-    for (int i = 0; i < 100; ++i)
-    {
-        std::cout << testBubble[i] << " ";
-    }
-
-    std::cout << std::endl;
-
-    //-----------------------------------------//
-
-    clockCount = ToolUtil::funNClock<std::chrono::microseconds>(AdvancedSort::mergeSort<int>, testMerge, testLength);
-
-    std::cout << "mergeSort microseconds is " << clockCount << std::endl;
-
-    for (int i = 0; i < 100; ++i)
-    {
-        std::cout << testMerge[i] << " ";
-    }
-
-    std::cout << std::endl;
-
-    //-----------------------------------------//
-
-    clockCount = ToolUtil::funNClock<std::chrono::microseconds>(AdvancedSort::mergeSortBU<int>, testMergeBU, testLength);
-
-    std::cout << "mergeSortBU microseconds is " << clockCount << std::endl;
-
-    for (int i = 0; i < 100; ++i)
-    {
-        std::cout << testMergeBU[i] << " ";
-    }
-
-    std::cout << std::endl;
-
-    //-----------------------------------------//
-
-    clockCount = ToolUtil::funNClock<std::chrono::microseconds>(AdvancedSort::quickSort<int>, testQuick, testLength);
-
-    std::cout << "quickSort microseconds is " << clockCount << std::endl;
-
-    for (int i = 0; i < 100; ++i)
-    {
-        std::cout << testQuick[i] << " ";
-    }
-
-    std::cout << std::endl;
-
-    //-----------------------------------------//
-
-    clockCount = ToolUtil::funNClock<std::chrono::microseconds>(AdvancedSort::quickSort2<int>, testQuick2, testLength);
-
-    std::cout << "quickSort2 microseconds is " << clockCount << std::endl;
-
-    for (int i = 0; i < 100; ++i)
-    {
-        std::cout << testQuick2[i] << " ";
-    }
-
-    std::cout << std::endl;
-
-    //-----------------------------------------//
-
-    clockCount = ToolUtil::funNClock<std::chrono::microseconds>(AdvancedSort::quickSort3<int>, testQuick3, testLength);
-
-    std::cout << "quickSort3 microseconds is " << clockCount << std::endl;
-
-    for (int i = 0; i < 100; ++i)
-    {
-        std::cout << testQuick3[i] << " ";
-    }
-
-    std::cout << std::endl;
-
-    //-----------------------------------------//
-    testRandomSort<std::chrono::microseconds>(testHeap1, testLength, HeapSort::heapSort1<int>, "heapSort1");
-
-//    clockCount = ToolUtil::funNClock<std::chrono::microseconds>(HeapSort::heapSort1<int>, testHeap1, testLength);
-//
-//    std::cout << "heapSort1 microseconds is " << clockCount << std::endl;
-//
-//    for (int i = 0; i < 100; ++i)
-//    {
-//        std::cout << testHeap1[i] << " ";
-//    }
-//
-//    std::cout << std::endl;
 
     delete[] testSelect;
-    delete[] testInsert;
-    delete[] testBubble;
-    delete[] testMerge;
-    delete[] testMergeBU;
-    delete[] testQuick;
-    delete[] testQuick2;
-    delete[] testQuick3;
-    delete[] testHeap1;
 }
 
 void testNearOrderArr()
@@ -206,114 +80,17 @@ void testNearOrderArr()
 
     std::cout << std::endl;
 
-    int* testInsert = SortTestHelper::copyArray(testSelect, testLength);
-    int* testBubble = SortTestHelper::copyArray(testSelect, testLength);
-    int* testMerge = SortTestHelper::copyArray(testSelect, testLength);
-    int* testMergeBU = SortTestHelper::copyArray(testSelect, testLength);
-    int* testQuick = SortTestHelper::copyArray(testSelect, testLength);
-    int* testQuick2 = SortTestHelper::copyArray(testSelect, testLength);
-    int* testQuick3 = SortTestHelper::copyArray(testSelect, testLength);
-    int* testHeap1 = SortTestHelper::copyArray(testSelect, testLength);
-
-    std::cout << std::endl;
-
-    int clockCount = ToolUtil::funNClock<std::chrono::microseconds>(BasicSort::selectSort<int>, testSelect, testLength);
-
-    std::cout << "selectSort microseconds is " << clockCount << std::endl;
-
-    for (int i = 0; i < 100; ++i)
-    {
-        std::cout << testSelect[i] << " ";
-    }
-
-    std::cout << std::endl;
-
-    clockCount = ToolUtil::funNClock<std::chrono::microseconds>(BasicSort::insertSort<int>, testInsert, testLength);
-
-    std::cout << "insertSort microseconds is " << clockCount << std::endl;
-
-    for (int i = 0; i < 100; ++i)
-    {
-        std::cout << testInsert[i] << " ";
-    }
-
-    std::cout << std::endl;
-
-    clockCount = ToolUtil::funNClock<std::chrono::microseconds>(AdvancedSort::mergeSort<int>, testMerge, testLength);
-
-    std::cout << "mergeSort microseconds is " << clockCount << std::endl;
-
-    for (int i = 0; i < 100; ++i)
-    {
-        std::cout << testMerge[i] << " ";
-    }
-
-    std::cout << std::endl;
-
-    clockCount = ToolUtil::funNClock<std::chrono::microseconds>(AdvancedSort::mergeSortBU<int>, testMergeBU, testLength);
-
-    std::cout << "mergeSortBU microseconds is " << clockCount << std::endl;
-
-    for (int i = 0; i < 100; ++i)
-    {
-        std::cout << testMergeBU[i] << " ";
-    }
-
-    std::cout << std::endl;
-
-    clockCount = ToolUtil::funNClock<std::chrono::microseconds>(AdvancedSort::quickSort<int>, testQuick, testLength);
-
-    std::cout << "testQuick microseconds is " << clockCount << std::endl;
-
-    for (int i = 0; i < 100; ++i)
-    {
-        std::cout << testQuick[i] << " ";
-    }
-
-    std::cout << std::endl;
-
-    clockCount = ToolUtil::funNClock<std::chrono::microseconds>(AdvancedSort::quickSort2<int>, testQuick2, testLength);
-
-    std::cout << "testQuick2 microseconds is " << clockCount << std::endl;
-
-    for (int i = 0; i < 100; ++i)
-    {
-        std::cout << testQuick2[i] << " ";
-    }
-
-    std::cout << std::endl;
-
-    clockCount = ToolUtil::funNClock<std::chrono::microseconds>(AdvancedSort::quickSort3<int>, testQuick3, testLength);
-
-    std::cout << "testQuick3 microseconds is " << clockCount << std::endl;
-
-    for (int i = 0; i < 100; ++i)
-    {
-        std::cout << testQuick3[i] << " ";
-    }
-
-    std::cout << std::endl;
-
-    clockCount = ToolUtil::funNClock<std::chrono::microseconds>(HeapSort::heapSort1<int>, testHeap1, testLength);
-
-    std::cout << "heapSort1 microseconds is " << clockCount << std::endl;
-
-    for (int i = 0; i < 100; ++i)
-    {
-        std::cout << testHeap1[i] << " ";
-    }
-
-    std::cout << std::endl;
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, BasicSort::selectSort<int>, "selectSort");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, BasicSort::insertSort<int>, "insertSort");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, BasicSort::bubbleSort<int>, "testBubble");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, AdvancedSort::mergeSort<int>, "mergeSort");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, AdvancedSort::mergeSortBU<int>, "mergeSortBU");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, AdvancedSort::quickSort<int>, "quickSort");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, AdvancedSort::quickSort2<int>, "quickSort2");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, AdvancedSort::quickSort3<int>, "quickSort3");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort1<int>, "heapSort1");
 
     delete[] testSelect;
-    delete[] testInsert;
-    delete[] testBubble;
-    delete[] testMerge;
-    delete[] testMergeBU;
-    delete[] testQuick;
-    delete[] testQuick2;
-    delete[] testQuick3;
-    delete[] testHeap1;
 }
 
 int main() {
