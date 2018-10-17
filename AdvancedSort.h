@@ -159,6 +159,12 @@ void AdvancedSort::mergeSortBU(T *arr, int length)
     }
 }
 
+/**
+ * 快速排序
+ * @tparam T
+ * @param arr
+ * @param length
+ */
 template<typename T>
 void AdvancedSort::quickSort(T *arr, int length)
 {
@@ -190,6 +196,13 @@ void AdvancedSort::quickSort(T *arr, int length)
 //    AdvancedSort::innerQuickSort(arr, j + 1, i - 1);
 }
 
+/**
+ * 快速排序
+ * @tparam T
+ * @param arr
+ * @param start
+ * @param end
+ */
 template <typename T>
 void AdvancedSort::innerQuickSort(T *arr, int start, int end)
 {
@@ -210,6 +223,9 @@ void AdvancedSort::innerQuickSort(T *arr, int start, int end)
 //
 //    std::swap(arr[start], arr[distribution(gen)]);
 
+    // 快速排序原理：随机选取数组中的一个数与第一个数进行交换
+    // 从第二个节点进行比较，当当前遍历的节点小于第一个节点，
+    // 将该节点交换到左边
     std::swap(arr[start], arr[rand() % (end - start + 1) + start]);
 
     int l = start;
@@ -226,11 +242,20 @@ void AdvancedSort::innerQuickSort(T *arr, int start, int end)
         }
     }
 
+    // 当遍历完毕之后，将第一个节点与最后一个小于第一个节点进行交换
+    // 然后将左右两个部分进行分别快速排序，实现整个数组的从小到大的排序
     std::swap(arr[start], arr[j]);
     AdvancedSort::innerQuickSort(arr, l, j - 1);
     AdvancedSort::innerQuickSort(arr, j + 1, end);
 }
 
+/**
+ * 快速排序版本2，与版本1对比，多了一个左右同时遍历的流程
+ * @tparam T
+ * @param arr
+ * @param start 当前数组的第一个元素索引
+ * @param end 当前数组最后一个元素索引
+ */
 template<typename T>
 void AdvancedSort::innerQuickSort2(T *arr, int start, int end)
 {
@@ -240,6 +265,7 @@ void AdvancedSort::innerQuickSort2(T *arr, int start, int end)
         return;
     }
 
+    // 随机选择一个元素与第一个元素交换
     std::swap(arr[start], arr[rand() % (end - start + 1) + start]);
 
     int l = start;
@@ -247,8 +273,13 @@ void AdvancedSort::innerQuickSort2(T *arr, int start, int end)
     int r = end;
     int j = r;
 
+    // 存储第一个元素
     T V = arr[l];
 
+    // 从左开始开始遍历，找到第一个大于v的元素
+    // 从右开始遍历，找到第一个小于v的元素
+    // 将两个元素进行交换
+    // 最后将v元素与停止遍历的元素进行交换
     while (i < j)
     {
         for (; i < j; ++i)
@@ -280,6 +311,12 @@ void AdvancedSort::innerQuickSort2(T *arr, int start, int end)
     AdvancedSort::innerQuickSort2(arr, j, r);
 }
 
+/**
+ * 快速排序版本2
+ * @tparam T
+ * @param arr
+ * @param length
+ */
 template<typename T>
 void AdvancedSort::quickSort2(T *arr, int length)
 {

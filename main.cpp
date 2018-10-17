@@ -26,7 +26,7 @@ void testRandomSort(int* testArr, int length, Fun&& fun, std::string sortName)
 
 void testRandomArr()
 {
-    std::cout << "----------testRandomArr----------" << std::endl;
+    std::cout << "**********************************testRandomArr**********************************" << std::endl;
 
     std::cout << std::endl;
 
@@ -55,6 +55,7 @@ void testRandomArr()
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, AdvancedSort::quickSort2<int>, "quickSort2");
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, AdvancedSort::quickSort3<int>, "quickSort3");
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort1<int>, "heapSort1");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort2<int>, "heapSort2");
 
 
     delete[] testSelect;
@@ -62,7 +63,7 @@ void testRandomArr()
 
 void testNearOrderArr()
 {
-    std::cout << std::endl << "----------testNearOrderArr----------" << std::endl;
+    std::cout << std::endl << "**********************************testNearOrderArr**********************************" << std::endl;
 
     int testLength = 10000;
 
@@ -89,6 +90,7 @@ void testNearOrderArr()
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, AdvancedSort::quickSort2<int>, "quickSort2");
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, AdvancedSort::quickSort3<int>, "quickSort3");
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort1<int>, "heapSort1");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort2<int>, "heapSort2");
 
     delete[] testSelect;
 }

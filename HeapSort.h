@@ -21,6 +21,7 @@ private:
 
 public:
     MaxHeap(int capacity);
+    MaxHeap(Item arr[], int length);
     ~MaxHeap();
 
     int size();
@@ -39,6 +40,9 @@ class HeapSort
 public:
     template <typename T>
     static void heapSort1(T* arr, int length);
+
+    template <typename T>
+    static void heapSort2(T* arr, int length);
 };
 
 template<typename T>
@@ -60,6 +64,17 @@ void HeapSort::heapSort1(T *arr, int length)
 //    {
 //        arr[i] = maxHeap.extractMax();
 //    }
+}
+
+template<typename T>
+void HeapSort::heapSort2(T* arr, int length)
+{
+    MaxHeap<T> maxHeap{arr, length};
+
+    for (int i = length - 1; i >= 0; --i)
+    {
+        arr[i] = maxHeap.extractMax();
+    }
 }
 
 template <typename Item>
@@ -167,6 +182,42 @@ void MaxHeap<Item>::shiftDown(int k)
 
         k = maxIndex;
     }
+}
+
+template<typename Item>
+MaxHeap<Item>::MaxHeap(Item arr[], int length)
+{
+    mData = new Item[length + 1];
+    memcpy(mData + 1, arr, length);
+    mCount = length;
+    mCapacity = length;
+
+    for (int i = length / 2; i >= 1; --i)
+    {
+        shiftDown(i);
+    }
+
+//    for (int i = length; i >= 1; --i)
+//    {
+//        int parent = i / 2;
+//
+//        shiftDown(parent);
+//    }
+
+//    下面这个算法之所以会失败，主要由于对存储结构不熟悉导致的
+//    因为申请的内存会比实际存储的数据多一个，即首个节点是用来存储临时最大节点使用
+//    所以实际比较的数据结尾其实就是从length开始，而不是length - 1，这样就可以修复问题
+//    for (int i = length - 1; i >= 1; --i)
+//    {
+//        int parent = i / 2;
+//
+//        shiftDown(parent);
+//
+//        if ((i - 1) / 2 == parent)
+//        {
+//            --i;
+//        }
+//    }
 }
 
 
