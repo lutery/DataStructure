@@ -43,6 +43,9 @@ public:
 
     template <typename T>
     static void heapSort2(T* arr, int length);
+
+    template <class T>
+    static void heapSort3(T* arr, int length);
 };
 
 template<typename T>
@@ -75,6 +78,14 @@ void HeapSort::heapSort2(T* arr, int length)
     {
         arr[i] = maxHeap.extractMax();
     }
+}
+
+template <class T>
+void HeapSort::heapSort3(T *arr, int length)
+{
+    MaxHeap<T> maxHeap{arr, length};
+
+
 }
 
 template <typename Item>

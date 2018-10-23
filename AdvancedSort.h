@@ -324,6 +324,13 @@ void AdvancedSort::quickSort2(T *arr, int length)
     AdvancedSort::innerQuickSort2(arr, 0, length - 1);
 }
 
+/**
+ * 快速排序版本3
+ * @tparam T
+ * @param arr
+ * @param start 起始索引
+ * @param end 结束索引
+ */
 template <typename T>
 void AdvancedSort::innerQuickSort3(T *arr, int start, int end)
 {
@@ -367,27 +374,35 @@ void AdvancedSort::innerQuickSort3(T *arr, int start, int end)
         return;
     }
 
+    // 这个版本的快速排序，在前面版本2的基础上增加了等于随机选取的比较点
+    // 进行排序，等于每次排序，将整个数组分为三个部分，进一步减少了每次需要
+    // 进行排序的数组长度，进一步的增块了速度
     std::swap(arr[start], arr[rand() % (end - start + 1) + start]);
 
     T V = arr[start];
 
-    int lt = start;
-    int gt = end + 1;
-    int i = start + 1;
+    int lt = start; // lt索引表示等于v的队列起始索引
+    int gt = end + 1; // gt索引表示大于v的队列起始索引
+    int i = start + 1; // i索引表示当前遍历的位置
 
     while (i < gt)
     {
+        // 如果当前的索引大于V，那么将当前节点与最后一个节点进行交换
+        // 但不改变索引i的值
         if (arr[i] > V)
         {
             std::swap(arr[i], arr[gt - 1]);
             --gt;
         }
+        // 如果当前索引小于v，将当前索引lt索引进行交换
+        // 同时改变lt i两个索引值
         else if (arr[i] < V)
         {
             std::swap(arr[i], arr[lt + 1]);
             lt++;
             i++;
         }
+        // 如果只是等于，进改变i索引
         else
         {
             ++i;
@@ -399,6 +414,12 @@ void AdvancedSort::innerQuickSort3(T *arr, int start, int end)
     AdvancedSort::innerQuickSort3(arr, gt, end);
 }
 
+/**
+ * 快速排序版本3
+ * @tparam T
+ * @param arr
+ * @param length
+ */
 template<typename T>
 void AdvancedSort::quickSort3(T *arr, int length)
 {
