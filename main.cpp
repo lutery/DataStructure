@@ -6,6 +6,8 @@
 #include "AdvancedSort.h"
 #include "HeapSort.h"
 
+//ToDo 写出所有排序算法的时间复杂度以及空间复杂度
+
 template<class TimeUnit, class Fun>
 void testRandomSort(int* testArr, int length, Fun&& fun, std::string sortName)
 {
@@ -56,7 +58,7 @@ void testRandomArr()
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, AdvancedSort::quickSort3<int>, "quickSort3");
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort1<int>, "heapSort1");
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort2<int>, "heapSort2");
-
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort3<int>, "heapSort3");
 
     delete[] testSelect;
 }
@@ -91,6 +93,7 @@ void testNearOrderArr()
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, AdvancedSort::quickSort3<int>, "quickSort3");
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort1<int>, "heapSort1");
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort2<int>, "heapSort2");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort3<int>, "heapSort3");
 
     delete[] testSelect;
 }

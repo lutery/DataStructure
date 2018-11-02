@@ -21,6 +21,9 @@ public:
     static void shellSort(T* arr, int length);
 
     template <typename T>
+    static void countSort(T* arr, int length);
+
+    template <typename T>
     static void bubbleSort(T* arr, int length);
 
     template <typename T>
@@ -163,6 +166,12 @@ void BasicSort::bubbleSort(T *arr, int length)
             }
         }
     }
+}
+
+template<typename T>
+void BasicSort::countSort(T *arr, int length)
+{
+
 }
 
 
