@@ -6,6 +6,7 @@
 #define DATASTRUCTURE_HEAPSORT_H
 
 #include "BasicSort.h"
+#include "IndexMaxHeap.h"
 #include <random>
 #include <algorithm>
 #include <iostream>
@@ -54,6 +55,15 @@ public:
 
     template <class T>
     static void heapSort3(T* arr, int length);
+
+    template <typename T>
+    static void indexHeapSort1(T* arr, int length);
+
+    template <typename T>
+    static void indexHeapSort2(T* arr, int length);
+
+    template <class T>
+    static void indexHeapSort3(T* arr, int length);
 
 private:
     template <class T>
@@ -148,6 +158,34 @@ void HeapSort::shiftdown(T *arr, int length, int k)
 
         // 保存最大孩子的索引进行重新的一轮遍历
         k = maxChild;
+    }
+}
+
+template<typename T>
+void HeapSort::indexHeapSort2(T *arr, int length)
+{
+
+}
+
+template<class T>
+void HeapSort::indexHeapSort3(T *arr, int length)
+{
+
+}
+
+template<typename T>
+void HeapSort::indexHeapSort1(T *arr, int length)
+{
+    IndexMaxHeap<T> indexMaxHeap{length};
+
+    for (int i = 0; i < length; ++i)
+    {
+        indexMaxHeap.insert(arr[i]);
+    }
+
+    for (int i = length - 1; i >= 0; --i)
+    {
+        arr[i] = indexMaxHeap.extractMax();
     }
 }
 

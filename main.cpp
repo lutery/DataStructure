@@ -59,6 +59,7 @@ void testRandomArr()
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort1<int>, "heapSort1");
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort2<int>, "heapSort2");
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort3<int>, "heapSort3");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::indexHeapSort1<int>, "indexHeapSort1");
 
     delete[] testSelect;
 }
@@ -98,7 +99,8 @@ void testNearOrderArr()
     delete[] testSelect;
 }
 
-int main() {
+int main()
+{
     std::cout << "Hello, World!" << std::endl;
 
     testRandomArr();
