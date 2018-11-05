@@ -60,6 +60,12 @@ private:
     static void shiftdown(T* arr, int length, int k);
 };
 
+/**
+ * 堆排序第一个版本，使用insert的方法完成排序
+ * @iparam T 数组的数据类型
+ * @param arr 数组对象
+ * @param length 数组长度 
+ */
 template<typename T>
 void HeapSort::heapSort1(T *arr, int length)
 {
@@ -81,6 +87,12 @@ void HeapSort::heapSort1(T *arr, int length)
 //    }
 }
 
+/**
+ * 堆排序第二个版本，使用构造函数完成数组的排序
+ * @tparam T 数组的数据类型
+ * @param arr 数组对象
+ * @param length 数组的长度
+ */ 
 template<typename T>
 void HeapSort::heapSort2(T* arr, int length)
 {
@@ -92,6 +104,12 @@ void HeapSort::heapSort2(T* arr, int length)
     }
 }
 
+/**
+ * 堆排序第三个版本，本地排序，不需要开辟额外的存储空间
+ * @tparam T 数组的数据类型
+ * @param arr 数组对象
+ * @param length 数组的长度
+ */ 
 template <class T>
 void HeapSort::heapSort3(T *arr, int length)
 {
@@ -271,14 +289,22 @@ void MaxHeap<Item>::shiftDown(int k)
     }
 }
 
+/**
+ * 构造函数，再构建堆对象的时候进行排序
+ * @ tparam Item 模板类型
+ * @ param arr[] 待排序的数组对象
+ * @ param length 数组的长度 
+ */
 template<typename Item>
 MaxHeap<Item>::MaxHeap(Item arr[], int length)
 {
+    // 创建一个比数组大于1的缓存存储数组，但是更好的办法是创建只要大于两倍的空间
     mData = new Item[length + 1];
     memcpy(mData + 1, arr, length);
     mCount = length;
     mCapacity = length;
 
+    // 从末端父节点开始，进行排序
     for (int i = length / 2; i >= 1; --i)
     {
         shiftDown(i);
