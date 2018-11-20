@@ -68,6 +68,9 @@ public:
 private:
     template <class T>
     static void shiftdown(T* arr, int length, int k);
+
+    template <typename T>
+    static void indexShiftDown(T* arr, int* index, int length, int k);
 };
 
 /**
@@ -164,13 +167,18 @@ void HeapSort::shiftdown(T *arr, int length, int k)
 template<typename T>
 void HeapSort::indexHeapSort2(T *arr, int length)
 {
+    IndexMaxHeap<T> indexMaxHeap{arr, length};
 
+    for (int i = length - 1; i >=0; --i)
+    {
+        arr[i] = indexMaxHeap.extractMax();
+    }
 }
 
 template<class T>
 void HeapSort::indexHeapSort3(T *arr, int length)
 {
-
+    
 }
 
 template<typename T>
@@ -186,6 +194,26 @@ void HeapSort::indexHeapSort1(T *arr, int length)
     for (int i = length - 1; i >= 0; --i)
     {
         arr[i] = indexMaxHeap.extractMax();
+    }
+}
+
+template<typename T>
+void HeapSort::indexShiftDown(T *arr, int *index, int length, int k)
+{
+    while ((2 * k + 1) < length)
+    {
+        int maxChild = 2 * k + 1;
+        if ((2 * k + 2) < length && arr[index[2 * k + 2]] > arr[index[maxChild]])
+        {
+            maxChild = 2 * k + 2;
+        }
+
+        if (arr[index[k]] < arr[index[maxChild]])
+        {
+            std::swap(index[k], index[maxChild]);
+        }
+
+        k = maxChild;
     }
 }
 
@@ -370,6 +398,5 @@ MaxHeap<Item>::MaxHeap(Item arr[], int length)
 //        }
 //    }
 }
-
 
 #endif //DATASTRUCTURE_HEAPSORT_H

@@ -26,18 +26,28 @@ void testRandomSort(int* testArr, int length, Fun&& fun, std::string sortName)
     std::cout << std::endl;
 }
 
+int generatorRnage(int min, int max)
+{
+    unsigned seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+    std::mt19937 rand_generator(seed);
+    std::uniform_int_distribution<int> dist(min, max);
+    return dist(rand_generator);
+}
+
 void testRandomArr()
 {
     std::cout << "**********************************testRandomArr**********************************" << std::endl;
 
     std::cout << std::endl;
 
-    int testLength = 10000;
+    int testLength = generatorRnage(100, 10000);
 
-    if (testLength < 100)
-    {
-        testLength = 100;
-    }
+//    if (testLength < 100)
+//    {
+//        testLength = 100;
+//    }
+
+    std::cout << "testLength = " << testLength << std::endl;
 
     int* testSelect = SortTestHelper::generalRandomArray(testLength, 0, testLength);
 
@@ -60,6 +70,7 @@ void testRandomArr()
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort2<int>, "heapSort2");
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort3<int>, "heapSort3");
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::indexHeapSort1<int>, "indexHeapSort1");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::indexHeapSort2<int>, "indexHeapSort2");
 
     delete[] testSelect;
 }
@@ -68,12 +79,15 @@ void testNearOrderArr()
 {
     std::cout << std::endl << "**********************************testNearOrderArr**********************************" << std::endl;
 
-    int testLength = 10000;
+//    int testLength = 10000;
+    int testLength = generatorRnage(100, 10000);
 
-    if (testLength < 100)
-    {
-        testLength = 100;
-    }
+//    if (testLength < 100)
+//    {
+//        testLength = 100;
+//    }
+
+    std::cout << "testLength = " << testLength << std::endl;
 
     int* testSelect = SortTestHelper::generalNearOrderArray(testLength, 10);
 
@@ -95,6 +109,8 @@ void testNearOrderArr()
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort1<int>, "heapSort1");
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort2<int>, "heapSort2");
     testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::heapSort3<int>, "heapSort3");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::indexHeapSort1<int>, "indexHeapSort1");
+    testRandomSort<std::chrono::microseconds>(testSelect, testLength, HeapSort::indexHeapSort2<int>, "indexHeapSort2");
 
     delete[] testSelect;
 }

@@ -10,18 +10,21 @@
 #include <algorithm>
 #include <iostream>
 #include <utility>
+#include <cstring>
 
 /**
- * 最大堆，什么是最大堆，每个节点的左右孩子都不会比父节点大
- * 该类使用的是数组的方式存储二叉树，所以每个节点的下标除以2就是其父节点
+ * 索引堆
+ * 以索引的方式存储堆内容，编译在进行堆排序的时候效率稳定
  * @tparam Item
  */
 template <typename Item>
 class IndexMaxHeap
 {
 private:
+    // 存储每个节点对应的索引
     int* mIndexes;
     // 每个节点的数据类型
+    int* mReverse;
     Item* mData;
     // 当前存储了几个节点
     int mCount;
@@ -38,6 +41,10 @@ public:
     void insert(Item item);
     void testPrint();
     Item extractMax();
+    int extractMaxIndex();
+    Item getItem(int index);
+    void change(int i, Item newItem);
+    bool contain(int i);
 
 private:
     void shiftUp(int k);
@@ -49,7 +56,14 @@ IndexMaxHeap<Item>::IndexMaxHeap(int capacity)
 {
     // 多申请一个节点，因为第一个位置不用于存储节点数据
     mData = new Item[capacity + 1];
+    // 申请索引节点
     mIndexes = new int[capacity + 1];
+    mReverse = new int[capacity + 1];
+    for (int i = 0, count = capacity + 1; i < count; ++i)
+    {
+        mReverse[i] = 0;
+    }
+
     // 初始化当前存储的数量
     mCount = 0;
     mCapacity = capacity + 1;
@@ -60,6 +74,7 @@ IndexMaxHeap<Item>::~IndexMaxHeap()
 {
     delete[] mData;
     delete[] mIndexes;
+    delete[] mReverse;
 }
 
 template<typename Item>
@@ -89,24 +104,38 @@ void IndexMaxHeap<Item>::insert(Item item)
         int newCapacity = mCapacity * 2;
         Item* data = new Item[newCapacity];
         int* indexes = new int[newCapacity];
+        int* reverse = new int[newCapacity];
         memset(data, 0, newCapacity);
         memcpy(data, mData, mCount);
 
         memset(indexes, 0, newCapacity);
         memcpy(indexes, mIndexes, mCount);
 
+        memset(reverse, 0, newCapacity);
+        memcpy(reverse, mReverse, mCount);
+
         delete[] mData;
         delete[] mIndexes;
+        delete[] mReverse;
 
         mData = data;
         mIndexes = indexes;
         mCapacity = newCapacity;
+        mReverse = reverse;
     }
 
-    // 将当前的节点插入到二叉树最末端
-    mData[++mCount] = item;
-    mIndexes[mCount] = mCount;
-    shiftUp(mIndexes[mCount]);
+    mData[mCount + 1] = item;
+    mIndexes[mCount + 1] = mCount + 1;
+    mReverse[mCount + 1] = mCount + 1;
+    mCount++;
+
+    shiftUp(mCount);
+
+//    // 将当前的节点插入到二叉树最末端
+//    mData[++mCount] = item;
+//    // 对于新插入的节点，其索引值等于当前最大的节点数（有问题，如果进行移除节点操作，那么这个索引值可能会重复）
+//    mIndexes[mCount] = mCount;
+//    shiftUp(mIndexes[mCount]);
 }
 
 /**
@@ -121,6 +150,8 @@ void IndexMaxHeap<Item>::shiftUp(int k)
     while (k > 1 && mData[mIndexes[k / 2]] < mData[mIndexes[k]])
     {
         std::swap(mIndexes[k / 2], mIndexes[k]);
+        mReverse[mIndexes[k / 2]] = k / 2;
+        mReverse[mIndexes[k]] = k;
         k /= 2;
     }
 }
@@ -150,6 +181,8 @@ Item IndexMaxHeap<Item>::extractMax()
 
     // 将对末端的节点与第一个节点进行交换
     std::swap(mIndexes[1], mIndexes[mCount]);
+    mReverse[mIndexes[1]] = 1;
+    mReverse[mIndexes[mCount]] = 0;
 
     mCount--;
 
@@ -183,6 +216,8 @@ void IndexMaxHeap<Item>::shiftDown(int k)
         if (mData[mIndexes[k]] < mData[mIndexes[maxIndex]])
         {
             std::swap(mIndexes[k], mIndexes[maxIndex]);
+            mReverse[mIndexes[k]] = k;
+            mReverse[mIndexes[maxIndex]] = maxIndex;
         }
 
         // 保存最大孩子的索引进行重新的一轮遍历
@@ -202,6 +237,12 @@ IndexMaxHeap<Item>::IndexMaxHeap(Item arr[], int length)
         mIndexes[i] = i;
     }
 
+    mReverse = new int[length + 1];
+    for (int i = 0, count = length + 1; i < count; ++i)
+    {
+        mReverse[i] = 0;
+    }
+
     mCount = length;
     mCapacity = length;
 
@@ -210,5 +251,61 @@ IndexMaxHeap<Item>::IndexMaxHeap(Item arr[], int length)
         shiftDown(i);
     }
 }
+
+template<typename Item>
+int IndexMaxHeap<Item>::extractMaxIndex()
+{
+    assert(mCount > 1);
+
+    int ret = mIndexes[1] - 1;
+    std::swap(mIndexes[1], mIndexes[mCount]);
+    mReverse[mIndexes[1]] = 1;
+    mReverse[mIndexes[mCount]] = 0;
+
+    mCount--;
+    shiftDown(1);
+
+    return ret;
+}
+
+template<typename Item>
+Item IndexMaxHeap<Item>::getItem(int index)
+{
+//    assert((index + 1) < mCount);
+    assert(contain(index));
+
+    return mData[index + 1];
+}
+
+template<typename Item>
+void IndexMaxHeap<Item>::change(int i, Item newItem)
+{
+    if (!this->contain(i))
+    {
+        return;
+    }
+
+    mData[i + 1] = newItem;
+    this->shiftUp(mReverse[i + 1]);
+    this->shiftDown(mReverse[i + 1]);
+
+//    for (int j = 0; j <= mCount; ++j)
+//    {
+//        if (mIndexes[j] == index)
+//        {
+//            this->shiftDown(j);
+//            this->shiftUp(j);
+//            break;
+//        }
+//    }
+}
+
+template<typename Item>
+bool IndexMaxHeap<Item>::contain(int i)
+{
+    assert(i + 1 >= 0 && i + 1 <= mCapacity);
+    return mReverse[i + 1] != 0;
+}
+
 
 #endif //DATASTRUCTURE_INDEXMAXHEAP_H
