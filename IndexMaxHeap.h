@@ -23,8 +23,9 @@ class IndexMaxHeap
 private:
     // 存储每个节点对应的索引
     int* mIndexes;
-    // 每个节点的数据类型
+    // 存储对应数据的索引在mIndex缓存中的位置索引
     int* mReverse;
+    // 每个节点的数据类型
     Item* mData;
     // 当前存储了几个节点
     int mCount;
@@ -59,6 +60,7 @@ IndexMaxHeap<Item>::IndexMaxHeap(int capacity)
     // 申请索引节点
     mIndexes = new int[capacity + 1];
     mReverse = new int[capacity + 1];
+    // 设置初始值为0，表示该位置不存在
     for (int i = 0, count = capacity + 1; i < count; ++i)
     {
         mReverse[i] = 0;
@@ -124,8 +126,11 @@ void IndexMaxHeap<Item>::insert(Item item)
         mReverse = reverse;
     }
 
+    // 存储数据
     mData[mCount + 1] = item;
+    // 将该节点的索引存储到索引缓存中
     mIndexes[mCount + 1] = mCount + 1;
+    // 节点索引位置缓存存储在索引缓存位置
     mReverse[mCount + 1] = mCount + 1;
     mCount++;
 
@@ -150,6 +155,7 @@ void IndexMaxHeap<Item>::shiftUp(int k)
     while (k > 1 && mData[mIndexes[k / 2]] < mData[mIndexes[k]])
     {
         std::swap(mIndexes[k / 2], mIndexes[k]);
+        // 因为索引缓存存储的是每个数据的索引，所以根据索引缓存的内容就可以直接定位到索引位置缓存的位置然后更新其内容，进行新的位置设置
         mReverse[mIndexes[k / 2]] = k / 2;
         mReverse[mIndexes[k]] = k;
         k /= 2;
@@ -181,6 +187,7 @@ Item IndexMaxHeap<Item>::extractMax()
 
     // 将对末端的节点与第一个节点进行交换
     std::swap(mIndexes[1], mIndexes[mCount]);
+    // 更新索引位置缓存
     mReverse[mIndexes[1]] = 1;
     mReverse[mIndexes[mCount]] = 0;
 
@@ -288,16 +295,6 @@ void IndexMaxHeap<Item>::change(int i, Item newItem)
     mData[i + 1] = newItem;
     this->shiftUp(mReverse[i + 1]);
     this->shiftDown(mReverse[i + 1]);
-
-//    for (int j = 0; j <= mCount; ++j)
-//    {
-//        if (mIndexes[j] == index)
-//        {
-//            this->shiftDown(j);
-//            this->shiftUp(j);
-//            break;
-//        }
-//    }
 }
 
 template<typename Item>
