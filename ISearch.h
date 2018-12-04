@@ -11,6 +11,7 @@ class ISearch
 public:
     virtual void insert(Key key, Value value) = 0;
     virtual Value search(Key key) = 0;
+    virtual void traverse() = 0;
 };
 
 #endif //DATASTRUCTURE_ISEARCH_H

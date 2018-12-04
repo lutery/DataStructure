@@ -66,6 +66,8 @@ void testSearchSort(Item* testArr, int length, ISearch<Item, Item>* search, std:
     delete[] testCurArr;
     delete search;
 
+    search->traverse();
+
     std::cout << std::endl;
 }
 
@@ -158,7 +160,7 @@ void testSearchArr()
 
     std::cout << "testLength = " << testLength << std::endl;
 
-    int* testSelect = SortTestHelper::generalNearOrderArray(testLength, 10);
+    int* testSelect = SortTestHelper::generalRandomArray(testLength, 0, 10000);
 
     for (int i = 0; i < 100; ++i)
     {

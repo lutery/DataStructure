@@ -3,6 +3,7 @@
 //
 
 #include "ISearch.h"
+#include <iostream>
 
 #ifndef DATASTRUCTURE_BINARYSEARCH_H
 #define DATASTRUCTURE_BINARYSEARCH_H
@@ -92,7 +93,7 @@ public:
 
     ~BST()
     {
-
+        destroy(this->root);
     }
 
     int size()
@@ -146,7 +147,26 @@ public:
         return this->contain(this->root, key);
     }
 
+    void traverse() override
+    {
+        this->preTraverse(this->root);
+//        this->midTraverse(this->root);
+//        this->backTraverse(this->root);
+    }
+
 private:
+    void destroy(Node* node)
+    {
+        if (node != nullptr)
+        {
+            destroy(node->left);
+            destroy(node->right);
+
+            delete node;
+            count--;
+        }
+    }
+
     /**
      * 插入节点
      * @param curNode 当前遍历到的节点
@@ -237,6 +257,42 @@ private:
         {
             return this->contain(node->right, key);
         }
+    }
+
+    void preTraverse(Node* node)
+    {
+        if (node == nullptr)
+        {
+            return;
+        }
+
+        std::cout << node->value << " ";
+        this->preTraverse(node->left);
+        this->preTraverse(node->right);
+    }
+
+    void midTraverse(Node* node)
+    {
+        if (node == nullptr)
+        {
+            return;
+        }
+
+        this->preTraverse(node->left);
+        std::cout << node->value << " ";
+        this->preTraverse(node->right);
+    }
+
+    void backTraverse(Node* node)
+    {
+        if (node == nullptr)
+        {
+            return;
+        }
+
+        this->preTraverse(node->left);
+        this->preTraverse(node->right);
+        std::cout << node->value << " ";
     }
 };
 
