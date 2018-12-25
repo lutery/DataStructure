@@ -4,6 +4,7 @@
 
 #include "ISearch.h"
 #include <iostream>
+#include <queue>
 
 #ifndef DATASTRUCTURE_BINARYSEARCH_H
 #define DATASTRUCTURE_BINARYSEARCH_H
@@ -72,6 +73,7 @@ private:
         Value value;
         Node* left;
         Node* right;
+        Node* parent;
 
         Node(Key key, Value value)
         {
@@ -147,6 +149,9 @@ public:
         return this->contain(this->root, key);
     }
 
+    /**
+     * 使用前中后三种方法遍历整个二叉树
+     */
     void traverse() override
     {
         this->preTraverse(this->root);
@@ -154,7 +159,175 @@ public:
 //        this->backTraverse(this->root);
     }
 
+    /**
+     * 广度优先遍历
+     */
+    void levelorder() override
+    {
+        this->levelTraverse(this->root);
+    }
+
+    Key minimum()
+    {
+        Node* minNode = this->minimum(this->root);
+        return minNode->key;
+    }
+
+    Key maxmum()
+    {
+        Node* maxNode = this->maxmum(this->root);
+        return maxNode->key;
+    }
+
+    Node* delMin()
+    {
+        if (this->root != nullptr)
+        {
+            return delMin(this->root);
+        }
+
+        return nullptr;
+    }
+
+    Node* delMax()
+    {
+        if (this->root != nullptr)
+        {
+            return delMax(this->root);
+        }
+
+        return nullptr;
+    }
+
+    void delNode(Key key)
+    {
+
+    }
+
 private:
+
+    Node* delNode(Node* curNode, Key key)
+    {
+        if (curNode == nullptr)
+        {
+            return nullptr;
+        }
+
+        if (curNode->key == key) {
+            if (curNode->right == nullptr) {
+                Node *leftNode = curNode->left;
+                delete curNode;
+                count--;
+
+                return leftNode;
+            }
+
+            if (curNode->left == nullptr) {
+                Node *rightNode = curNode->right;
+                delete curNode;
+                count--;
+
+                return curNode->right;
+            }
+
+            Node *minNode = delMin(curNode->right);
+            minNode->left = curNode->left;
+            minNode->right = curNode->right;
+
+            delete curNode;
+            count--;
+            return minNode;
+        }
+        else if (curNode->key > key)
+        {
+            return curNode->left = delNode(curNode->left, key);
+        }
+        else
+        {
+            return curNode->right = delNode(curNode->right, key);
+        }
+    }
+
+    Node* delMax(Node* node)
+    {
+        if (node->right == nullptr)
+        {
+            if (node->left != nullptr && node->parent != nullptr)
+            {
+                node->parent->right = node->left;
+            }
+
+            Node* findNode = new Node(node->key, node->value);
+            return findNode;
+        }
+
+        return delMax(node->right);
+    }
+
+    Node* delMin(Node* node)
+    {
+        if (node->left == nullptr)
+        {
+            if (node->right != nullptr && node->parent != nullptr)
+            {
+                node->parent->left = node->right;
+            }
+
+            //todo 根据我的结构设计，需要在节点里面加入一个父节点
+            Node* findNode = new Node(node->key, node->value);
+            return findNode;
+        }
+
+        return delMin(node->left);
+    }
+
+    Node* maxmum(Node* node)
+    {
+        if (node->right == nullptr)
+        {
+            return node;
+        }
+
+        return maxmum(node->right);
+
+//        Node* curNode = node->right;
+//        Node* maxNode = node;
+//
+//        while (curNode != nullptr)
+//        {
+//            if (curNode->value > maxNode->value)
+//            {
+//                maxNode = curNode;
+//            }
+//
+//            curNode = curNode->right;
+//        }
+//
+//        return maxNode;
+    }
+
+    Node* minimum(Node* node)
+    {
+        if (node->left == nullptr)
+        {
+            return node;
+        }
+
+        return minimum(node->left);
+//        Node* curNode = node->left;
+//        Node* miniNode = node;
+//        while (curNode != nullptr)
+//        {
+//            if (curNode->value < miniNode->value){
+//                miniNode = curNode;
+//            }
+//
+//            curNode = curNode->left;
+//        }
+//
+//        return miniNode;
+    }
+
     void destroy(Node* node)
     {
         if (node != nullptr)
@@ -189,14 +362,16 @@ private:
             curNode->value = value;
         }
         // 如果当前节点key小于key，那么在左孩子里面找
-        else if (curNode->key < key)
+        else if (curNode->key > key)
         {
             curNode->left = this->insert(curNode->left, key, value);
+            curNode->left->parent = curNode;
         }
         // 剩余的情况在右孩子里面找
         else
         {
             curNode->right = this->insert(curNode->right, key, value);
+            curNode->right->parent = curNode;
         }
 
         //将自身返回
@@ -220,7 +395,7 @@ private:
         {
             return curNode;
         }
-        else if (curNode->key < key)
+        else if (curNode->key > key)
         {
             return this->search(curNode->left, key);
         }
@@ -259,6 +434,9 @@ private:
         }
     }
 
+    /**
+     * 前序遍历 从当前传入的节点开始，前序遍历是优先读取当前的节点值
+     */
     void preTraverse(Node* node)
     {
         if (node == nullptr)
@@ -271,6 +449,10 @@ private:
         this->preTraverse(node->right);
     }
 
+    /**
+     * 中序遍历 从当前传入的节点开始，中序遍历优先遍历左孩子
+     * @param node
+     */
     void midTraverse(Node* node)
     {
         if (node == nullptr)
@@ -283,6 +465,10 @@ private:
         this->preTraverse(node->right);
     }
 
+    /**
+     * 后续遍历 从当前传入的节点开始，后续遍历是将当前的节点放在左右两个孩子最后遍历
+     * @param node
+     */
     void backTraverse(Node* node)
     {
         if (node == nullptr)
@@ -293,6 +479,41 @@ private:
         this->preTraverse(node->left);
         this->preTraverse(node->right);
         std::cout << node->value << " ";
+    }
+
+    /**
+     * 广度优先遍历是优先把当前节点的子节点全部遍历一遍，然后才继续往下遍历
+     * @param node
+     */
+    void levelTraverse(Node* node)
+    {
+        std::queue<Node*> qNode;
+        qNode.push(node);
+
+        std::cout << std::endl;
+
+        // 每次将当前队列中存储的节点值弹出，然后将其左右孩子节点存储在队列中
+        // 不断的循环直到队列为空为止
+        while (qNode.size() > 0)
+        {
+            Node* curNode = qNode.front();
+
+            if (curNode->left != nullptr)
+            {
+                qNode.push(curNode->left);
+            }
+
+            if (curNode->right != nullptr)
+            {
+                qNode.push(curNode->right);
+            }
+
+            std::cout << curNode->value << " ";
+
+            qNode.pop();
+        }
+
+        std::cout << std::endl;
     }
 };
 

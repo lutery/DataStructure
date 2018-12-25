@@ -1,5 +1,6 @@
 #include <iostream>
 #include <utility>
+#include <climits>
 #include "ToolUtil.h"
 #include "SortTestHelper.h"
 #include "BasicSort.h"
@@ -14,7 +15,14 @@ int generatorRnage(int min, int max)
     unsigned seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
     std::mt19937 rand_generator(seed);
     std::uniform_int_distribution<int> dist(min, max);
-    return dist(rand_generator);
+    int range = dist(rand_generator);
+
+    if (range < 10)
+    {
+        range = 10;
+    }
+
+    return range;
 }
 
 //ToDo 写出所有排序算法的时间复杂度以及空间复杂度
@@ -67,6 +75,7 @@ void testSearchSort(Item* testArr, int length, ISearch<Item, Item>* search, std:
     delete search;
 
     search->traverse();
+    search->levelorder();
 
     std::cout << std::endl;
 }
@@ -152,24 +161,78 @@ void testNearOrderArr()
     delete[] testSelect;
 }
 
-void testSearchArr()
+void testBinarySearch()
 {
-    std::cout << std::endl << "**********************************testSearchArr**********************************" << std::endl;
+    std::cout << std::endl << "**********************************BSTSearch**********************************" << std::endl;
 
-    int testLength = generatorRnage(100, 10000);
+    int testLength = generatorRnage(0, 10);
 
     std::cout << "testLength = " << testLength << std::endl;
 
-    int* testSelect = SortTestHelper::generalRandomArray(testLength, 0, 10000);
+    int* testSelect = SortTestHelper::generalRandomArray(testLength, 0, 20);
 
-    for (int i = 0; i < 100; ++i)
+    for (int i = 0, count = testLength % 100; i < count; ++i)
     {
         std::cout << testSelect[i] << " ";
     }
 
     std::cout << std::endl;
 
-    testSearchSort<std::chrono::nanoseconds, int>(testSelect, testLength, new BST<int, int>(), "BSTSearch");
+//    testSearchSort<std::chrono::nanoseconds, int>(testSelect, testLength, new BST<int, int>(), "BSTSearch");
+    BST<int, int>* search = new BST<int, int>();
+
+    int* testCurArr = SortTestHelper::copyArray(testSelect, testLength);
+    int searchkey = generatorRnage(0, 20);
+    bool containKey = false;
+    int maxValue = INT_MIN;
+    int minValue = INT_MAX;
+
+    for (int i = 0; i < testLength; ++i) {
+        search->insert(testSelect[i], testSelect[i]);
+
+        if (!containKey && searchkey == testSelect[i])
+        {
+            containKey = true;
+        }
+
+        if (maxValue < testSelect[i])
+        {
+            maxValue = testSelect[i];
+        }
+
+        if (minValue > testSelect[i])
+        {
+            minValue = testSelect[i];
+        }
+    }
+
+    auto [clockCount, ret] = ToolUtil::cfunClock<std::chrono::nanoseconds>(&ISearch<int, int>::search, search, searchkey);
+//    auto [clockCount, ret] = ToolUtil::funClock<TimeUnit>(fun, testCurArr, length, generatorRnage(100, 10000));
+//    int clockCount = ToolUtil::funNClock<TimeUnit>(fun, testCurArr, length);
+
+    std::cout << "maxValue is " << maxValue << ", minValue is " << minValue << std::endl;
+
+    std::cout << "del max value is " << search->delMax()->value << " del min value is " << search->delMin()->value <<  ", after delmin after maxValue is " << search->search(search->maxmum()) << ", minValue is " << search->search(search->minimum()) << std::endl;
+//
+    std::cout << "BSTSearch nanoseconds is " << clockCount << std::endl;
+//
+    std::cout << std::endl << "search key is " << searchkey << " contain key is " << (containKey ? " exist " : "not exist") << " search result is " << ret << ", search " << (ret >= 0 ? "success" : "failed") << std::endl;
+//
+    if (containKey)
+    {
+        search->delNode(containKey);
+
+        std::cout << std::endl << "search key is delete " << (search->contain(containKey) ? "failed" : "success") << std::endl;
+    }
+
+    delete[] testCurArr;
+    delete search;
+
+    search->traverse();
+    search->levelorder();
+
+    std::cout << std::endl;
+
 
     delete[] testSelect;
 }
@@ -180,7 +243,7 @@ int main()
 
     testRandomArr();
     testNearOrderArr();
-    testSearchArr();
+    testBinarySearch();
 
 //    const int heapLength = 10;
 //    const int insertLength = 10;
