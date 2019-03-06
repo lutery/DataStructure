@@ -201,8 +201,14 @@ public:
 
     void delNode(Key key)
     {
-
+        if (this->root != nullptr)
+        {
+            this->delNode(this->root, key);
+        }
     }
+
+    // TOdo 增加Ceil floor操作 】
+    // ToDo 实现其他的二叉树
 
 private:
 

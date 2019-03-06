@@ -8,7 +8,7 @@
 #include "HeapSort.h"
 #include "BinarySearch.h"
 #include "ISearch.h"
-
+#include "UnionSearch.h"
 
 int generatorRnage(int min, int max)
 {
@@ -237,6 +237,40 @@ void testBinarySearch()
     delete[] testSelect;
 }
 
+template <class T>
+void testUnionSearch(UnionSearch<T>* pUnionSearch)
+{
+    srand(time(nullptr));
+
+    int countElement = pUnionSearch->count();
+    for (int i = 0; i < countElement; ++i)
+    {
+        int a = rand() % countElement;
+        int b = rand() % countElement;
+
+        pUnionSearch->unionGroup(a, b);
+    }
+
+    for (int i = 0; i < countElement; ++i)
+    {
+        int a = rand() % countElement;
+        int b = rand() % countElement;
+
+        std::cout << a << " and " << b << (pUnionSearch->isConnect(a, b) ? " connect " : " no connect") << std::endl;
+    }
+}
+
+void testUnionSearch()
+{
+    std::cout << std::endl << "**********************************BSTSearch**********************************" << std::endl;
+
+    UnionSearch<int> unionSearch(generatorRnage(10, 10000));
+
+    auto clockCount = ToolUtil::funNClock<std::chrono::milliseconds>(testUnionSearch<int>, &unionSearch);
+
+    std::cout << "unionsearch union and isconnect time is " << clockCount << " millseconds" << std::endl;
+}
+
 int main()
 {
     std::cout << "Hello, World!" << std::endl;
@@ -244,6 +278,7 @@ int main()
     testRandomArr();
     testNearOrderArr();
     testBinarySearch();
+    testUnionSearch();
 
 //    const int heapLength = 10;
 //    const int insertLength = 10;
