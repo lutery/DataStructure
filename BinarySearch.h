@@ -233,12 +233,13 @@ private:
                 delete curNode;
                 count--;
 
-                return curNode->right;
+                return rightNode;
             }
 
             Node *minNode = delMin(curNode->right);
             minNode->left = curNode->left;
             minNode->right = curNode->right;
+            minNode->parent = curNode->parent;
 
             delete curNode;
             count--;
@@ -246,11 +247,13 @@ private:
         }
         else if (curNode->key > key)
         {
-            return curNode->left = delNode(curNode->left, key);
+            curNode->left = delNode(curNode->left, key);
+            return curNode;
         }
         else
         {
-            return curNode->right = delNode(curNode->right, key);
+            curNode->right = delNode(curNode->right, key);
+            return curNode;
         }
     }
 
@@ -279,8 +282,8 @@ private:
                 node->parent->left = node->right;
             }
 
-            //todo 根据我的结构设计，需要在节点里面加入一个父节点
             Node* findNode = new Node(node->key, node->value);
+            delete node;
             return findNode;
         }
 
