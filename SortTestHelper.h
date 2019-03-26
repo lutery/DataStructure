@@ -46,6 +46,20 @@ namespace SortTestHelper{
         });
     }
 
+    template<typename T>
+    T* generalAssignArray(const std::initializer_list<T> array)
+    {
+        T* t = new T[array.size()];
+
+        int i = 0;
+        for (auto& a : array)
+        {
+            t[i++] = a;
+        }
+
+        return t;
+    }
+
     template <typename T>
     T* generalRandomArray(int count, T rangeL, T rangeR)
     {

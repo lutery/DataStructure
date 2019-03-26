@@ -223,6 +223,7 @@ private:
             if (curNode->right == nullptr) {
                 Node *leftNode = curNode->left;
                 delete curNode;
+                curNode = nullptr;
                 count--;
 
                 return leftNode;
@@ -231,6 +232,7 @@ private:
             if (curNode->left == nullptr) {
                 Node *rightNode = curNode->right;
                 delete curNode;
+                curNode = nullptr;
                 count--;
 
                 return rightNode;
@@ -242,6 +244,7 @@ private:
             minNode->parent = curNode->parent;
 
             delete curNode;
+            curNode = nullptr;
             count--;
             return minNode;
         }
@@ -265,8 +268,13 @@ private:
             {
                 node->parent->right = node->left;
             }
+            else
+            {
+                node->parent->right = nullptr;
+            }
 
             Node* findNode = new Node(node->key, node->value);
+            delete node;
             return findNode;
         }
 
@@ -280,6 +288,10 @@ private:
             if (node->right != nullptr && node->parent != nullptr)
             {
                 node->parent->left = node->right;
+            }
+            else
+            {
+                node->parent->left = nullptr;
             }
 
             Node* findNode = new Node(node->key, node->value);
@@ -345,6 +357,7 @@ private:
             destroy(node->right);
 
             delete node;
+            node = nullptr;
             count--;
         }
     }
