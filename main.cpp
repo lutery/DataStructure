@@ -169,8 +169,8 @@ void testBinarySearch()
 
     std::cout << "testLength = " << testLength << std::endl;
 
-//    int* testSelect = SortTestHelper::generalRandomArray(testLength, 0, 20);
-    int* testSelect = SortTestHelper::generalAssignArray({8, 10, 16, 4, 19, 2, 1, 0, 15, 14});
+    int* testSelect = SortTestHelper::generalRandomArray(testLength, 0, 20);
+//    int* testSelect = SortTestHelper::generalAssignArray({8, 10, 16, 4, 19, 2, 1, 0, 15, 14});
 
     for (int i = 0, count = testLength % 100; i < count; ++i)
     {
@@ -214,23 +214,23 @@ void testBinarySearch()
     std::cout << "search maxValue " << search->maxmum() << " is " << (maxValue == search->maxmum() ? " right " : " failed ") << ", minValue " << search->minimum() << " is " << (minValue == search->minimum() ? " right " : " failed ") << std::endl;
 
     std::cout << "del max value is " << search->delMax()->value << " del min value is " << search->delMin()->value <<  ", after del after maxValue is " << search->search(search->maxmum()) << ", minValue is " << search->search(search->minimum()) << std::endl;
-//
-    std::cout << "BSTSearch nanoseconds is " << clockCount << std::endl;
-//
-    std::cout << std::endl << "search key is " << searchkey << " contain key is " << (containKey ? " exist " : "not exist") << " search result is " << ret << ", search " << (ret >= 0 ? "success" : "failed") << std::endl;
-//
-//    if (containKey)
-//    {
-//        search->delNode(containKey);
-//
-//        std::cout << std::endl << "search key is delete " << (search->contain(containKey) ? "failed" : "success") << std::endl;
-//    }
 
-    delete[] testCurArr;
-    delete search;
+    std::cout << "BSTSearch nanoseconds is " << clockCount << std::endl;
+
+    std::cout << std::endl << "search key is " << searchkey << " contain key is " << (containKey ? " exist " : "not exist") << " search result is " << ret << ", search " << (ret >= 0 ? "success" : "failed") << std::endl;
+
+    if (containKey)
+    {
+        search->delNode(containKey);
+
+        std::cout << std::endl << "search key is delete " << (search->contain(containKey) ? "failed" : "success") << std::endl;
+    }
 
     search->traverse();
     search->levelorder();
+
+    delete[] testCurArr;
+    delete search;
 
     std::cout << std::endl;
 

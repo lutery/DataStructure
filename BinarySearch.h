@@ -268,9 +268,13 @@ private:
             {
                 node->parent->right = node->left;
             }
-            else
+            else if (node->parent != nullptr)
             {
                 node->parent->right = nullptr;
+            }
+            else if (node->left != nullptr)
+            {
+                this->root = node->left;
             }
 
             Node* findNode = new Node(node->key, node->value);
@@ -289,9 +293,13 @@ private:
             {
                 node->parent->left = node->right;
             }
-            else
+            else if (node->parent != nullptr)
             {
                 node->parent->left = nullptr;
+            }
+            else if (node->right != nullptr)
+            {
+                this->root = node->right;
             }
 
             Node* findNode = new Node(node->key, node->value);
