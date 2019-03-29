@@ -7,6 +7,25 @@
 
 #include <iostream>
 
+template <class T>
+class QuickUnion {
+private:
+    T *mElement = nullptr;
+    int mCount = 0;
+
+public:
+    QuickUnion(int count) : mCount(count), mElement(new T[count]) {
+
+    }
+
+    int count()
+    {
+        return this->mCount;
+    }
+
+
+};
+
 /**
  * 并查集，主要实现的是分组网络，可以用于查看用户的关联关系，网络互通关系等等
  * @tparam T
@@ -63,12 +82,6 @@ public:
             }
         }
     }
-};
-
-class UnionSearchTestHelper
-{
-public:
-
 };
 
 
