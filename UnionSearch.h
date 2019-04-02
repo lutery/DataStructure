@@ -8,13 +8,44 @@
 #include <iostream>
 
 template <class T>
-class QuickUnion {
+class IUnion
+{
+protected:
+    T* mElement = nullptr;
+    int mCount = 0;
+
+public:
+    IUnion(int count) : mCount(count), mElement(new T[count]){}
+    virtual ~IUnion()
+    {
+        delete[] mElement;
+    }
+
+    int count()
+    {
+        return mCount;
+    }
+
+    virtual T searchGroup(int index) = 0;
+    virtual void setGroup(int index, int group) = 0;
+    virtual bool isConnect(int pIndex, int qIndex) = 0;
+    virtual void unionGroup(int pIndex, int qIndex) = 0;
+};
+
+template <class T>
+class QuickUnion : IUnion<T> {
 private:
     T *mElement = nullptr;
     int mCount = 0;
 
 public:
-    QuickUnion(int count) : mCount(count), mElement(new T[count]) {
+    QuickUnion(int count) : IUnion<T>(count)
+    {
+
+    }
+
+    virtual ~QuickUnion()
+    {
 
     }
 
@@ -23,7 +54,56 @@ public:
         return this->mCount;
     }
 
+    T searchGroup(int index) override
+    {
+        return mElement[index];
+    }
 
+    void setGroup(int index, int group) override
+    {
+        mElement[index] = group;
+    }
+
+    bool isConnect(int pIndex, int qIndex) override
+    {
+        T pTop, qTop;
+
+        while (mElement[pIndex] != pIndex)
+        {
+            pIndex = mElement[pIndex];
+        }
+
+        pTop = mElement[pIndex];
+
+        while (mElement[qIndex] != qIndex)
+        {
+            qIndex = mElement[qIndex];
+        }
+
+        qTop = mElement[qIndex];
+
+        return pTop == qTop;
+    }
+
+    void unionGroup(int pIndex, int qIndex) override
+    {
+//        int pCount = 0;
+//        int qCount = 0;
+
+        while (mElement[pIndex] != pIndex)
+        {
+//            ++pCount;
+            pIndex = mElement[pIndex];
+        }
+
+        while (mElement[qIndex] != qIndex)
+        {
+//            ++qCount;
+            qIndex = mElement[qIndex];
+        }
+
+        mElement[pIndex] = qIndex;
+    }
 };
 
 /**
@@ -31,17 +111,20 @@ public:
  * @tparam T
  */
 template <class T>
-class UnionSearch
-{
+class UnionSearch :  {
 private:
     // 存储每个元素（索引）其所在的分组（值）
-    T* mElement = nullptr;
+    T *mElement = nullptr;
     int mCount = 0;
 
 public:
-    UnionSearch(int count):mCount(count), mElement(new T[count])
-    {
+    UnionSearch(int count) : mCount(count), mElement(new T[count]) {
 
+    }
+
+    ~UnionSearch()
+    {
+        delete[] mElement;
     }
 
     int count()
