@@ -257,8 +257,35 @@ void testUnionSearch(UnionSearch<T>* pUnionSearch)
         int a = rand() % countElement;
         int b = rand() % countElement;
 
-        std::cout << a << " and " << b << (pUnionSearch->isConnect(a, b) ? " connect " : " no connect") << std::endl;
+        std::cout << a << " and " << b << (pUnionSearch->isConnect(a, b) ? " connect ;;; " : " disconnect ;;; ");// << std::endl;
     }
+
+    std::cout << std::endl;
+}
+
+template <class T>
+void testQuickUnion(IUnion<T>* pUnionSearch)
+{
+    srand(time(nullptr));
+
+    int countElement = pUnionSearch->count();
+    for (int i = 0; i < countElement; ++i)
+    {
+        int a = rand() % countElement;
+        int b = rand() % countElement;
+
+        pUnionSearch->unionGroup(a, b);
+    }
+
+    for (int i = 0; i < countElement; ++i)
+    {
+        int a = rand() % countElement;
+        int b = rand() % countElement;
+
+        std::cout << a << " and " << b << (pUnionSearch->isConnect(a, b) ? " connect ;;; " : " disconnect ;;; ");// << std::endl;
+    }
+
+    std::cout << std::endl;
 }
 
 void testUnionSearch()
@@ -266,10 +293,13 @@ void testUnionSearch()
     std::cout << std::endl << "**********************************BSTSearch**********************************" << std::endl;
 
     UnionSearch<int> unionSearch(generatorRnage(10, 10000));
+    QuickUnion<int> quickUnion(10);
 
     auto clockCount = ToolUtil::funNClock<std::chrono::milliseconds>(testUnionSearch<int>, &unionSearch);
-
     std::cout << "unionsearch union and isconnect time is " << clockCount << " millseconds" << std::endl;
+
+    clockCount = ToolUtil::funNClock<std::chrono::milliseconds>(testQuickUnion<int>, &quickUnion);
+    std::cout << "quick union search and isconnect time is " << clockCount << " millseconds" << std::endl;
 }
 
 int main()

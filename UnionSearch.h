@@ -15,7 +15,14 @@ protected:
     int mCount = 0;
 
 public:
-    IUnion(int count) : mCount(count), mElement(new T[count]){}
+    IUnion(int count) : mCount(count), mElement(new T[count])
+    {
+        for (int i = 0;  i < count; ++i)
+        {
+            mElement[i] = i;
+        }
+    }
+
     virtual ~IUnion()
     {
         delete[] mElement;
@@ -27,16 +34,16 @@ public:
     }
 
     virtual T searchGroup(int index) = 0;
-    virtual void setGroup(int index, int group) = 0;
+//    virtual void setGroup(int index, int group) = 0;
     virtual bool isConnect(int pIndex, int qIndex) = 0;
     virtual void unionGroup(int pIndex, int qIndex) = 0;
 };
 
 template <class T>
-class QuickUnion : IUnion<T> {
+class QuickUnion : public IUnion<T> {
 private:
-    T *mElement = nullptr;
-    int mCount = 0;
+//    T *mElement = nullptr;
+//    int mCount = 0;
 
 public:
     QuickUnion(int count) : IUnion<T>(count)
@@ -49,60 +56,68 @@ public:
 
     }
 
-    int count()
-    {
-        return this->mCount;
-    }
-
     T searchGroup(int index) override
     {
-        return mElement[index];
+        assert(index >= 0 && index < this->mCount);
+        while (index != this->mElement[index])
+        {
+            index = this->mElement[index];
+        }
+
+        return index;
     }
 
-    void setGroup(int index, int group) override
-    {
-        mElement[index] = group;
-    }
+//    void setGroup(int index, int group) override
+//    {
+//        this->mElement[index] = group;
+//    }
 
     bool isConnect(int pIndex, int qIndex) override
     {
-        T pTop, qTop;
+//        T pTop, qTop;
+//
+//        while (this->mElement[pIndex] != pIndex)
+//        {
+//            pIndex = this->mElement[pIndex];
+//        }
+//
+//        pTop = this->mElement[pIndex];
+//
+//        while (this->mElement[qIndex] != qIndex)
+//        {
+//            qIndex = this->mElement[qIndex];
+//        }
+//
+//        qTop = this->mElement[qIndex];
+//
+//        return pTop == qTop;
 
-        while (mElement[pIndex] != pIndex)
-        {
-            pIndex = mElement[pIndex];
-        }
-
-        pTop = mElement[pIndex];
-
-        while (mElement[qIndex] != qIndex)
-        {
-            qIndex = mElement[qIndex];
-        }
-
-        qTop = mElement[qIndex];
-
-        return pTop == qTop;
+        return this->searchGroup(pIndex) == this->searchGroup(qIndex);
     }
 
     void unionGroup(int pIndex, int qIndex) override
     {
-//        int pCount = 0;
-//        int qCount = 0;
+//        while (this->mElement[pIndex] != pIndex)
+//        {
+//            pIndex = this->mElement[pIndex];
+//        }
+//
+//        while (this->mElement[qIndex] != qIndex)
+//        {
+//            qIndex = this->mElement[qIndex];
+//        }
+//
+//        this->mElement[pIndex] = qIndex;
 
-        while (mElement[pIndex] != pIndex)
+        int pRoot = this->searchGroup(pIndex);
+        int qRoot = this->searchGroup(qIndex);
+
+        if (pRoot == qRoot)
         {
-//            ++pCount;
-            pIndex = mElement[pIndex];
+            return;
         }
 
-        while (mElement[qIndex] != qIndex)
-        {
-//            ++qCount;
-            qIndex = mElement[qIndex];
-        }
-
-        mElement[pIndex] = qIndex;
+        this->mElement[pRoot] = qRoot;
     }
 };
 
@@ -111,43 +126,37 @@ public:
  * @tparam T
  */
 template <class T>
-class UnionSearch :  {
+class UnionSearch : public IUnion<T>{
 private:
     // 存储每个元素（索引）其所在的分组（值）
-    T *mElement = nullptr;
-    int mCount = 0;
+//    T *mElement = nullptr;
+//    int mCount = 0;
 
 public:
-    UnionSearch(int count) : mCount(count), mElement(new T[count]) {
+    UnionSearch(int count) : IUnion<T>(count){
 
     }
 
-    ~UnionSearch()
+    virtual ~UnionSearch()
     {
-        delete[] mElement;
     }
 
-    int count()
+    T searchGroup(int index) override
     {
-        return this->mCount;
-    }
-
-    T searchGroup(int index)
-    {
-        return mElement[index];
+        return this->mElement[index];
     }
 
     void setGroup(int index, int group)
     {
-        mElement[index] = group;
+        this->mElement[index] = group;
     }
 
-    bool isConnect(int pIndex, int qIndex)
+    bool isConnect(int pIndex, int qIndex) override
     {
         return searchGroup(pIndex) == searchGroup(qIndex);
     }
 
-    void unionGroup(int p, int q)
+    void unionGroup(int p, int q) override
     {
         T pGroup = searchGroup(p);
         T qGroup = searchGroup(q);
@@ -157,7 +166,7 @@ public:
             return;
         }
 
-        for (int i = 0; i < mCount; ++i)
+        for (int i = 0; i < this->mCount; ++i)
         {
             if (searchGroup(i) == pGroup)
             {
