@@ -167,18 +167,30 @@ public:
         this->levelTraverse(this->root);
     }
 
+    /**
+     * 查找最小值
+     * @return 返回最小值的key
+     */
     Key minimum()
     {
         Node* minNode = this->minimum(this->root);
         return minNode->key;
     }
 
+    /**
+     * 查找最大值
+     * @return 返回最大值的key
+     */
     Key maxmum()
     {
         Node* maxNode = this->maxmum(this->root);
         return maxNode->key;
     }
 
+    /**
+     * 删除最小值
+     * @return 如果根节点为空那么返回nullptr
+     */
     Node* delMin()
     {
         if (this->root != nullptr)
@@ -189,6 +201,10 @@ public:
         return nullptr;
     }
 
+    /**
+     * 删除最大值
+     * @return 根节点为空返回nullptr
+     */
     Node* delMax()
     {
         if (this->root != nullptr)
@@ -199,6 +215,10 @@ public:
         return nullptr;
     }
 
+    /**
+     * 删除指定节点
+     * @param key  传入节点key
+     */
     void delNode(Key key)
     {
         if (this->root != nullptr)
@@ -212,6 +232,12 @@ public:
 
 private:
 
+    /**
+     * 删除指定节点
+     * @param curNode 从哪个节点开始进行查询
+     * @param key 删除节点的键值
+     * @return 返回被删除的节点内容
+     */
     Node* delNode(Node* curNode, Key key)
     {
         if (curNode == nullptr)
@@ -220,34 +246,36 @@ private:
         }
 
         if (curNode->key == key) {
+
+            // 如果右节点为空，那么将左节点返回给父节点，替换当前节点
             if (curNode->right == nullptr) {
                 Node *leftNode = curNode->left;
                 delete curNode;
-                curNode = nullptr;
                 count--;
 
                 return leftNode;
             }
 
+            // 同理，左节点为空时
             if (curNode->left == nullptr) {
                 Node *rightNode = curNode->right;
                 delete curNode;
-                curNode = nullptr;
                 count--;
 
                 return rightNode;
             }
 
+            // 如果左右节点不为空，那么需要从右节点中找到最小值替换当前节点
             Node *minNode = delMin(curNode->right);
             minNode->left = curNode->left;
             minNode->right = curNode->right;
             minNode->parent = curNode->parent;
 
             delete curNode;
-            curNode = nullptr;
             count--;
             return minNode;
         }
+        // 利用二叉树的特性继续寻找节点
         else if (curNode->key > key)
         {
             curNode->left = delNode(curNode->left, key);
@@ -260,10 +288,18 @@ private:
         }
     }
 
+    /**
+     * 从指定节点开始删除最大值
+     * @param
+     * @return
+     */
     Node* delMax(Node* node)
     {
+        // 因为比当前节点大的值一定在右节点，所以这里不断的向右节点寻找最大值
         if (node->right == nullptr)
         {
+            // 左值不为空且父节点存在（防止根节点无父节点问题）
+            // 将左节点返回给父节点替换当前节点
             if (node->left != nullptr && node->parent != nullptr)
             {
                 node->parent->right = node->left;
