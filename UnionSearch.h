@@ -44,11 +44,15 @@ class QuickUnion : public IUnion<T> {
 private:
 //    T *mElement = nullptr;
 //    int mCount = 0;
+    int* mSize = nullptr;
 
 public:
-    QuickUnion(int count) : IUnion<T>(count)
+    QuickUnion(int count) : IUnion<T>(count), mSize(new int[count])
     {
-
+        for (int i = 0; i < this->mCount; ++i)
+        {
+            mSize[i] = 1;
+        }
     }
 
     virtual ~QuickUnion()
@@ -117,7 +121,16 @@ public:
             return;
         }
 
-        this->mElement[pRoot] = qRoot;
+        if (mSize[pRoot] < mSize[qRoot])
+        {
+            this->mElement[pRoot] = qRoot;
+            mSize[qRoot] += mSize[pRoot];
+        }
+        else
+        {
+            this->mElement[qRoot] = pRoot;
+            mSize[pRoot] += mSize[qRoot];
+        }
     }
 };
 

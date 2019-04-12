@@ -293,7 +293,7 @@ void testUnionSearch()
     std::cout << std::endl << "**********************************UnionSearch**********************************" << std::endl;
 
     UnionSearch<int> unionSearch(generatorRnage(10, 10000));
-    QuickUnion<int> quickUnion(10);
+    QuickUnion<int> quickUnion(generatorRnage(10, 10000));
 
     auto clockCount = ToolUtil::funNClock<std::chrono::milliseconds>(testUnionSearch<int>, &unionSearch);
     std::cout << "unionsearch union and isconnect time is " << clockCount << " millseconds" << std::endl;
