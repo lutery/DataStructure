@@ -80,6 +80,7 @@ private:
             this->key = key;
             this->value = value;
             this->left = this->right = nullptr;
+            this->parent = nullptr;
         }
     };
 
@@ -250,6 +251,11 @@ private:
             // 如果右节点为空，那么将左节点返回给父节点，替换当前节点
             if (curNode->right == nullptr) {
                 Node *leftNode = curNode->left;
+
+                if (curNode->parent == nullptr){
+                    leftNode->parent = nullptr;
+                }
+
                 delete curNode;
                 count--;
 
@@ -259,6 +265,11 @@ private:
             // 同理，左节点为空时
             if (curNode->left == nullptr) {
                 Node *rightNode = curNode->right;
+
+                if (curNode->parent == nullptr){
+                    rightNode->parent = nullptr;
+                }
+
                 delete curNode;
                 count--;
 
@@ -270,6 +281,10 @@ private:
             minNode->left = curNode->left;
             minNode->right = curNode->right;
             minNode->parent = curNode->parent;
+
+            if (curNode->parent == nullptr){
+                minNode->parent = nullptr;
+            }
 
             delete curNode;
             count--;
@@ -311,6 +326,7 @@ private:
             else if (node->left != nullptr)
             {
                 this->root = node->left;
+                this->root->parent = nullptr;
             }
 
             Node* findNode = new Node(node->key, node->value);
@@ -336,6 +352,7 @@ private:
             else if (node->right != nullptr)
             {
                 this->root = node->right;
+                this->root->parent = nullptr;
             }
 
             Node* findNode = new Node(node->key, node->value);
