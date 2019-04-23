@@ -7,16 +7,23 @@
 
 #include <iostream>
 
+/**
+ * 并查集接口
+ * @tparam T
+ */
 template <class T>
 class IUnion
 {
 protected:
+    // 存储的元素数组，其保存的内容是索引i是哪个分组
     T* mElement = nullptr;
+    // 元素的个数
     int mCount = 0;
 
 public:
     IUnion(int count) : mCount(count), mElement(new T[count])
     {
+        // 初始化每个元素指向自身
         for (int i = 0;  i < count; ++i)
         {
             mElement[i] = i;
@@ -33,12 +40,20 @@ public:
         return mCount;
     }
 
+    // 索引i所对应的组
     virtual T searchGroup(int index) = 0;
 //    virtual void setGroup(int index, int group) = 0;
+    //判断是否连接
     virtual bool isConnect(int pIndex, int qIndex) = 0;
+    //连接两个分组
     virtual void unionGroup(int pIndex, int qIndex) = 0;
 };
 
+/**
+ * 快速排序并查集，与普通并查集相比，多了一个mSize成员，其存储的是每一个索引所在的分组
+ * 其分组的大小
+ * @tparam T
+ */
 template <class T>
 class QuickUnion : public IUnion<T> {
 private:
@@ -49,6 +64,7 @@ private:
 public:
     QuickUnion(int count) : IUnion<T>(count), mSize(new int[count])
     {
+        // 初始化每一个分组的个数为1
         for (int i = 0; i < this->mCount; ++i)
         {
             mSize[i] = 1;
@@ -57,11 +73,16 @@ public:
 
     virtual ~QuickUnion()
     {
-
+        if (mSize != nullptr) {
+            delete[] mSize;
+        }
     }
 
     T searchGroup(int index) override
     {
+        // 由于每个元素其存储的是该分组所在位置的上一级元素索引
+        // 其根节点所存储的才是该分组的组号
+        // 所以这里需要不断的向上遍历
         assert(index >= 0 && index < this->mCount);
         while (index != this->mElement[index])
         {
@@ -78,41 +99,14 @@ public:
 
     bool isConnect(int pIndex, int qIndex) override
     {
-//        T pTop, qTop;
-//
-//        while (this->mElement[pIndex] != pIndex)
-//        {
-//            pIndex = this->mElement[pIndex];
-//        }
-//
-//        pTop = this->mElement[pIndex];
-//
-//        while (this->mElement[qIndex] != qIndex)
-//        {
-//            qIndex = this->mElement[qIndex];
-//        }
-//
-//        qTop = this->mElement[qIndex];
-//
-//        return pTop == qTop;
-
         return this->searchGroup(pIndex) == this->searchGroup(qIndex);
     }
 
     void unionGroup(int pIndex, int qIndex) override
     {
-//        while (this->mElement[pIndex] != pIndex)
-//        {
-//            pIndex = this->mElement[pIndex];
-//        }
-//
-//        while (this->mElement[qIndex] != qIndex)
-//        {
-//            qIndex = this->mElement[qIndex];
-//        }
-//
-//        this->mElement[pIndex] = qIndex;
-
+        /**
+         * 获取两个节点的所在的分组
+         */
         int pRoot = this->searchGroup(pIndex);
         int qRoot = this->searchGroup(qIndex);
 
@@ -121,6 +115,11 @@ public:
             return;
         }
 
+        /**
+         * 如果pRoot分组的节点数小于qRoot分组，那么pRoot分组根节点指向qRoot分组的根节点
+         * 并更新qRoot分组的个数
+         * 反之亦然
+         */
         if (mSize[pRoot] < mSize[qRoot])
         {
             this->mElement[pRoot] = qRoot;
@@ -171,6 +170,9 @@ public:
 
     void unionGroup(int p, int q) override
     {
+        /**
+         * 原理：每个元素存储其对应的分组信息，判断获取设置都可以通过缩影快速的查询设置
+         */
         T pGroup = searchGroup(p);
         T qGroup = searchGroup(q);
 
