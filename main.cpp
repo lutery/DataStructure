@@ -257,7 +257,8 @@ void testUnionSearch(UnionSearch<T>* pUnionSearch)
         int a = rand() % countElement;
         int b = rand() % countElement;
 
-        std::cout << a << " and " << b << (pUnionSearch->isConnect(a, b) ? " connect ;;; " : " disconnect ;;; ");// << std::endl;
+//        std::cout << a << " and " << b << (pUnionSearch->isConnect(a, b) ? " connect ;;; " : " disconnect ;;; ");// << std::endl;
+        pUnionSearch->isConnect(a, b);
     }
 
     std::cout << std::endl;
@@ -282,24 +283,56 @@ void testQuickUnion(IUnion<T>* pUnionSearch)
         int a = rand() % countElement;
         int b = rand() % countElement;
 
-        std::cout << a << " and " << b << (pUnionSearch->isConnect(a, b) ? " connect ;;; " : " disconnect ;;; ");// << std::endl;
+//        std::cout << a << " and " << b << (pUnionSearch->isConnect(a, b) ? " connect ;;; " : " disconnect ;;; ");// << std::endl;
+        pUnionSearch->isConnect(a, b);
     }
 
     std::cout << std::endl;
 }
 
+template <class T>
+void testRankUnion(IUnion<T>* pUnionSearch)
+{
+    srand(time(nullptr));
+
+    int countElement = pUnionSearch->count();
+    for (int i = 0; i < countElement; ++i)
+    {
+        int a = rand() % countElement;
+        int b = rand() % countElement;
+
+        pUnionSearch->unionGroup(a, b);
+    }
+
+    for (int i = 0; i < countElement; ++i)
+    {
+        int a = rand() % countElement;
+        int b = rand() % countElement;
+
+//        std::cout << a << " and " << b << (pUnionSearch->isConnect(a, b) ? " connect ;;; " : " disconnect ;;; ");// << std::endl;
+        pUnionSearch->isConnect(a, b);
+    }
+
+    std::cout << std::endl;
+}
+
+
 void testUnionSearch()
 {
     std::cout << std::endl << "**********************************UnionSearch**********************************" << std::endl;
 
-    UnionSearch<int> unionSearch(generatorRnage(10, 10000));
-    QuickUnion<int> quickUnion(generatorRnage(10, 10000));
+    UnionSearch<int> unionSearch(generatorRnage(10, 100000));
+    QuickUnion<int> quickUnion(generatorRnage(10, 100000));
+    RankUnion<int> rankUnion(generatorRnage(10, 100000));
 
     auto clockCount = ToolUtil::funNClock<std::chrono::milliseconds>(testUnionSearch<int>, &unionSearch);
     std::cout << "unionsearch union and isconnect time is " << clockCount << " millseconds" << std::endl;
 
-    clockCount = ToolUtil::funNClock<std::chrono::milliseconds>(testQuickUnion<int>, &quickUnion);
-    std::cout << "quick union search and isconnect time is " << clockCount << " millseconds" << std::endl;
+    auto clockCount1 = ToolUtil::funNClock<std::chrono::milliseconds>(testQuickUnion<int>, &quickUnion);
+    std::cout << "quick union search and isconnect time is " << clockCount1 << " millseconds" << std::endl;
+
+    auto clockCount2 = ToolUtil::funNClock<std::chrono::milliseconds>(testRankUnion<int>, &rankUnion);
+    std::cout << "rank union search and isconnect time is " << clockCount2 << " millseconds" << std::endl;
 }
 
 int main()
