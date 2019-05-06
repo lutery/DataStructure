@@ -11,6 +11,22 @@
 #include <algorithm>
 #include <iostream>
 
+// 使用二分树存储，在数组中寻找最大的前N个数
+class TopN
+{
+    // https://mp.weixin.qq.com/s/SHmoBNduRYOf5yO87Q9yWQ
+private:
+    int parent(int n);
+    int left(int n);
+    int right(int n);
+    void buildHeap(int n, int* data, int length);
+    void adjust(int i, int n, int*data, int length);
+
+public:
+    void findTopN(int n, int* data, int length);
+    void print(int* data, int length);
+};
+
 //进阶排序
 class AdvancedSort {
 

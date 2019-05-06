@@ -321,9 +321,10 @@ void testUnionSearch()
 {
     std::cout << std::endl << "**********************************UnionSearch**********************************" << std::endl;
 
-    UnionSearch<int> unionSearch(generatorRnage(10, 100000));
-    QuickUnion<int> quickUnion(generatorRnage(10, 100000));
-    RankUnion<int> rankUnion(generatorRnage(10, 100000));
+    UnionSearch<int> unionSearch(generatorRnage(10000, 100000));
+    QuickUnion<int> quickUnion(generatorRnage(10000, 100000));
+    RankUnion<int> rankUnion(generatorRnage(10000, 100000));
+    PathUnion<int> pathUnion(generatorRnage(10000, 100000));
 
     auto clockCount = ToolUtil::funNClock<std::chrono::milliseconds>(testUnionSearch<int>, &unionSearch);
     std::cout << "unionsearch union and isconnect time is " << clockCount << " millseconds" << std::endl;
@@ -333,6 +334,35 @@ void testUnionSearch()
 
     auto clockCount2 = ToolUtil::funNClock<std::chrono::milliseconds>(testRankUnion<int>, &rankUnion);
     std::cout << "rank union search and isconnect time is " << clockCount2 << " millseconds" << std::endl;
+
+    auto clockCount3 = ToolUtil::funNClock<std::chrono::milliseconds>(testRankUnion<int>, &pathUnion);
+    std::cout << "path union search and isconnect time is " << clockCount3 << " millseconds" << std::endl;
+}
+
+void testTopN()
+{
+    TopN topN;
+
+//    int* arr1 = SortTestHelper::generalAssignArray({5, 93, 48, 12, 22, 35, 49, 9, 26, 71});
+    std::cout << "*******************arr1*******************" << std::endl;
+    int* arr1 = SortTestHelper::generalRandomArray(10, 0, 100);
+    topN.print(arr1, 10);
+    topN.findTopN(5, arr1, 10);
+    topN.print(arr1, 10);
+    std::cout << "*******************end*******************" << std::endl;
+    std::cout << "*******************arr2*******************" << std::endl;
+    int* arr2 = SortTestHelper::generalRandomArray(1000, 0, 1000000);
+    topN.print(arr2, 100);
+    topN.findTopN(1000 / 2, arr2, 1000);
+    topN.print(arr2, 1000);
+    std::cout << "*******************end*******************" << std::endl;
+    std::cout << "*******************arr3*******************" << std::endl;
+    int* arr3 = SortTestHelper::generalRandomArray(100000, 0, 100000000);
+    topN.print(arr3, 1000);
+    topN.findTopN(100000 / 2, arr3, 100000);
+    topN.print(arr3, 100000);
+    std::cout << "*******************end*******************" << std::endl;
+
 }
 
 int main()
@@ -343,6 +373,7 @@ int main()
     testNearOrderArr();
     testBinarySearch();
     testUnionSearch();
+    testTopN();
 
 //    const int heapLength = 10;
 //    const int insertLength = 10;
