@@ -22,6 +22,23 @@ private:
     int mDotCount = 0;
     int mBorderCount = 0;
     std::vector<std::vector<bool>> mGraph;
+
+public:
+    class ITerator
+    {
+    public:
+        ITerator(DenseGraph& graph, int dot);
+        ~ITerator();
+
+        int begin();
+        int next();
+        bool end();
+
+    private:
+        int mCurCount;
+        int mCurDot;
+        DenseGraph& mGraph;
+    };
 };
 
 

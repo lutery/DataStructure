@@ -9,6 +9,8 @@
 #include "BinarySearch.h"
 #include "ISearch.h"
 #include "UnionSearch.h"
+#include "SparseGraph.h"
+#include "DenseGraph.h"
 
 int generatorRnage(int min, int max)
 {
@@ -321,10 +323,10 @@ void testUnionSearch()
 {
     std::cout << std::endl << "**********************************UnionSearch**********************************" << std::endl;
 
-    UnionSearch<int> unionSearch(generatorRnage(10000, 100000));
-    QuickUnion<int> quickUnion(generatorRnage(10000, 100000));
-    RankUnion<int> rankUnion(generatorRnage(10000, 100000));
-    PathUnion<int> pathUnion(generatorRnage(10000, 100000));
+    UnionSearch<int> unionSearch(generatorRnage(1000, 10000));
+    QuickUnion<int> quickUnion(generatorRnage(1000, 10000));
+    RankUnion<int> rankUnion(generatorRnage(1000, 10000));
+    PathUnion<int> pathUnion(generatorRnage(1000, 10000));
 
     auto clockCount = ToolUtil::funNClock<std::chrono::milliseconds>(testUnionSearch<int>, &unionSearch);
     std::cout << "unionsearch union and isconnect time is " << clockCount << " millseconds" << std::endl;
@@ -365,6 +367,68 @@ void testTopN()
 
 }
 
+void testSparseGraph()
+{
+    std::cout << "*******************SparseGraph*******************" << std::endl;
+
+    int dotCount = generatorRnage(10, 100000);
+    SparseGraph sparseGraph(dotCount, false);
+    for (int i = 0; i < generatorRnage(90000, 900000); ++i)
+    {
+        int a = generatorRnage(0, dotCount - 1);
+        int b = generatorRnage(0, dotCount - 1);
+
+        sparseGraph.addEdge(a, b);
+    }
+
+    for (int i = 0; i < dotCount; ++i)
+    {
+        std::cout << i << " : ";
+
+        SparseGraph::ITerator iTerator(sparseGraph, i);
+        for (int j = iTerator.begin(); !iTerator.end(); j = iTerator.next())
+        {
+            std::cout << j << ", ";
+        }
+
+        std::cout << std::endl;
+    }
+
+    std::cout << "*******************SparseGraph*******************" << std::endl;
+
+}
+
+void testDenseGraph()
+{
+    std::cout << "*******************DenseGraph*******************" << std::endl;
+
+    int dotCount = generatorRnage(10, 100000);
+    DenseGraph denseGraph(dotCount, false);
+    for (int i = 0; i < generatorRnage(90000, 900000); ++i)
+    {
+        int a = generatorRnage(0, dotCount - 1);
+        int b = generatorRnage(0, dotCount - 1);
+
+        denseGraph.addEdge(a, b);
+    }
+
+    for (int i = 0; i < dotCount; ++i)
+    {
+        std::cout << i << " : ";
+
+        DenseGraph::ITerator iTerator(denseGraph, i);
+        for (int j = iTerator.begin(); !iTerator.end(); j = iTerator.next())
+        {
+            std::cout << j << ", ";
+        }
+
+        std::cout << std::endl;
+    }
+
+    std::cout << "*******************DenseGraph*******************" << std::endl;
+
+}
+
 int main()
 {
     std::cout << "Hello, World!" << std::endl;
@@ -372,8 +436,10 @@ int main()
     testRandomArr();
     testNearOrderArr();
     testBinarySearch();
-    testUnionSearch();
+//    testUnionSearch();
     testTopN();
+    testSparseGraph();
+    testDenseGraph();
 
 //    const int heapLength = 10;
 //    const int insertLength = 10;

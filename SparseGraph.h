@@ -22,6 +22,23 @@ private:
     int mDotCount = 0;
     int mBorderCount = 0;
     std::vector<std::vector<int>> mGraph;
+
+public:
+    class ITerator
+    {
+    public:
+        ITerator(SparseGraph& graph, int dot);
+        ~ITerator();
+
+        int begin();
+        int next();
+        bool end();
+
+    private:
+        int mCurCount;
+        int mCurDot;
+        SparseGraph& mGraph;
+    };
 };
 
 

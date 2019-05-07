@@ -50,3 +50,42 @@ void SparseGraph::addEdge(int src, int dst)
 
     mBorderCount++;
 }
+
+SparseGraph::ITerator::ITerator(SparseGraph &graph, int dot) : mGraph(graph)
+{
+    mCurDot = dot;
+    mCurCount = 0;
+}
+
+SparseGraph::ITerator::~ITerator()
+{
+
+}
+
+int SparseGraph::ITerator::begin()
+{
+    mCurCount = 0;
+
+    if (mGraph.mGraph[mCurDot].size() > 0)
+    {
+        return mGraph.mGraph[mCurDot][mCurCount];
+    }
+
+    return -1;
+}
+
+int SparseGraph::ITerator::next()
+{
+    mCurCount++;
+    if (mCurCount < mGraph.mGraph[mCurDot].size())
+    {
+        return mGraph.mGraph[mCurDot][mCurCount];
+    }
+
+    return -1;
+}
+
+bool SparseGraph::ITerator::end()
+{
+    return mCurCount >= mGraph.mGraph[mCurDot].size();
+}
