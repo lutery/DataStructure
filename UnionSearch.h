@@ -87,7 +87,7 @@ public:
 //
 //        return index;
 
-        while (index != this->mElement[index])
+        if (index != this->mElement[index])
         {
             this->mElement[index] = searchGroup(this->mElement[index]);
         }

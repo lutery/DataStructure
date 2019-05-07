@@ -371,7 +371,7 @@ void testSparseGraph()
 {
     std::cout << "*******************SparseGraph*******************" << std::endl;
 
-    int dotCount = generatorRnage(10, 100000);
+    int dotCount = generatorRnage(10, 1000);
     SparseGraph sparseGraph(dotCount, false);
     for (int i = 0; i < generatorRnage(90000, 900000); ++i)
     {
@@ -402,9 +402,9 @@ void testDenseGraph()
 {
     std::cout << "*******************DenseGraph*******************" << std::endl;
 
-    int dotCount = generatorRnage(10, 100000);
+    int dotCount = generatorRnage(10, 1000);
     DenseGraph denseGraph(dotCount, false);
-    for (int i = 0; i < generatorRnage(90000, 900000); ++i)
+    for (int i = 0; i < generatorRnage(900, 9000); ++i)
     {
         int a = generatorRnage(0, dotCount - 1);
         int b = generatorRnage(0, dotCount - 1);
@@ -436,7 +436,7 @@ int main()
     testRandomArr();
     testNearOrderArr();
     testBinarySearch();
-//    testUnionSearch();
+    testUnionSearch();
     testTopN();
     testSparseGraph();
     testDenseGraph();
