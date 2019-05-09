@@ -11,6 +11,7 @@
 #include "UnionSearch.h"
 #include "SparseGraph.h"
 #include "DenseGraph.h"
+#include "RenderGraph.h"
 
 int generatorRnage(int min, int max)
 {
@@ -429,6 +430,19 @@ void testDenseGraph()
 
 }
 
+void testRenderGraph()
+{
+    std::string filename = "testG1.txt";
+
+    DenseGraph denseGraph(13, false);
+    RenderGraph<DenseGraph>::readGraph(denseGraph, filename);
+    denseGraph.show();
+
+    SparseGraph sparseGraph(13, false);
+    RenderGraph<SparseGraph>::readGraph(sparseGraph, filename);
+    sparseGraph.show();
+}
+
 int main()
 {
     std::cout << "Hello, World!" << std::endl;
@@ -438,8 +452,9 @@ int main()
     testBinarySearch();
     testUnionSearch();
     testTopN();
-    testSparseGraph();
-    testDenseGraph();
+//    testSparseGraph();
+//    testDenseGraph();
+    testRenderGraph();
 
 //    const int heapLength = 10;
 //    const int insertLength = 10;

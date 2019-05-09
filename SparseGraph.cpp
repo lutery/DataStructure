@@ -2,6 +2,7 @@
 // Created by yanghui on 2019-05-05.
 //
 
+#include <iostream>
 #include "SparseGraph.h"
 
 SparseGraph::SparseGraph(int dotCount, bool isDirect)
@@ -49,6 +50,28 @@ void SparseGraph::addEdge(int src, int dst)
     }
 
     mBorderCount++;
+}
+
+void SparseGraph::show()
+{
+    std::cout << "**************SPARSE GRAPH*******" << std::endl;
+    int i = 0;
+    for (auto& graph : mGraph)
+    {
+        std::cout << "dot " << i << " : ";
+
+        for (auto& item : graph)
+        {
+            std::cout << " item,";
+        }
+
+        std::cout << std::endl;
+        i++;
+    }
+}
+
+int SparseGraph::V() {
+    return mGraph.size();
 }
 
 SparseGraph::ITerator::ITerator(SparseGraph &graph, int dot) : mGraph(graph)

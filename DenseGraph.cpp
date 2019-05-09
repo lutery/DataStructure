@@ -2,6 +2,7 @@
 // Created by yanghui on 2019-05-05.
 //
 
+#include <iostream>
 #include "DenseGraph.h"
 
 DenseGraph::DenseGraph(int dotCount, bool isDirect)
@@ -42,6 +43,32 @@ void DenseGraph::addEdge(int src, int dst)
     }
 
     mBorderCount++;
+}
+
+void DenseGraph::show()
+{
+    std::cout << "**************DENSE GRAPH**************" << std::endl;
+    for (auto& graph : mGraph)
+    {
+        for (auto item : graph)
+        {
+            if (item)
+            {
+                std::cout << " 1 ";
+            }
+            else
+            {
+                std::cout << " 0 ";
+            }
+
+        }
+
+        std::cout << std::endl;
+    }
+}
+
+int DenseGraph::V() {
+    return mGraph.size();
 }
 
 DenseGraph::ITerator::ITerator(DenseGraph &graph, int dot) : mGraph(graph)

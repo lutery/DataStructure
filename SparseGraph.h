@@ -15,7 +15,8 @@ public:
 
     bool hasEdge(int src, int dst);
     void addEdge(int src, int dst);
-
+    void show();
+    int V();
 
 private:
     bool mIsDirect = false;
