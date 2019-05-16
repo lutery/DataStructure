@@ -344,6 +344,7 @@ void testUnionSearch()
 
 void testTopN()
 {
+    std::cout << "*******************TopN*******************" << std::endl;
     TopN topN;
 
 //    int* arr1 = SortTestHelper::generalAssignArray({5, 93, 48, 12, 22, 35, 49, 9, 26, 71});
@@ -432,15 +433,25 @@ void testDenseGraph()
 
 void testRenderGraph()
 {
-    std::string filename = "testG1.txt";
+    std::cout << "*******************RenderGraph*******************" << std::endl;
 
-    DenseGraph denseGraph(13, false);
-    RenderGraph<DenseGraph>::readGraph(denseGraph, filename);
-    denseGraph.show();
-
+    std::string filename1 = "../testG1.txt";
+    std::cout << "filename is " << filename1 << std::endl;
     SparseGraph sparseGraph(13, false);
-    RenderGraph<SparseGraph>::readGraph(sparseGraph, filename);
+    RenderGraph<SparseGraph>::readGraph(sparseGraph, filename1);
+    Component<SparseGraph> componentSparse(sparseGraph);
     sparseGraph.show();
+    std::cout << "TestG1.txt, Component Count: " << componentSparse.getDotCount() << std::endl;
+
+    std::string filename2 = "../testG2.txt";
+    std::cout << "filename is " << filename2 << std::endl;
+    SparseGraph sparseGraph1(7, false);
+    RenderGraph<SparseGraph>::readGraph(sparseGraph1, filename2);
+    Component<SparseGraph> componentSparse1(sparseGraph1);
+    sparseGraph1.show();
+    std::cout << "TestG2.txt, Component Count: " << componentSparse1.getDotCount() << std::endl;
+
+    std::cout << "*******************RenderGraph*******************" << std::endl;
 }
 
 int main()
@@ -452,8 +463,8 @@ int main()
     testBinarySearch();
     testUnionSearch();
     testTopN();
-//    testSparseGraph();
-//    testDenseGraph();
+    testSparseGraph();
+    testDenseGraph();
     testRenderGraph();
 
 //    const int heapLength = 10;

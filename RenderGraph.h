@@ -10,6 +10,54 @@
 #include <sstream>
 
 template <typename Graph>
+class Component
+{
+private:
+    Graph& G;
+    bool* visited;
+    int dotCount = 0;
+
+    void dfs(int curDot)
+    {
+        visited[curDot] = true;
+
+        typename Graph::ITerator iTerator(G, curDot);
+
+        for (int i = iTerator.begin(); !iTerator.end(); i = iTerator.next())
+        {
+            if (!visited[i])
+            {
+                dfs(i);
+                dotCount++;
+            }
+        }
+    }
+
+public:
+    auto getDotCount() -> int  {
+        return this->dotCount;
+    }
+
+    Component(Graph& graph) : G(graph)
+    {
+        visited = new bool[G.V()];
+
+        for (int i = 0; i < G.V(); ++i)
+        {
+            visited[i] = false;
+        }
+
+        for (int i = 0; i < G.V(); ++i)
+        {
+            if (!visited[i])
+            {
+                dfs(i);
+            }
+        }
+    }
+};
+
+template <typename Graph>
 class RenderGraph
 {
 public:
