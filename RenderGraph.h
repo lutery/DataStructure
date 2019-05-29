@@ -9,6 +9,10 @@
 #include <fstream>
 #include <sstream>
 
+/**
+ * 遍历联通分量，也就是内部有多少联通区域
+ * @tparam Graph
+ */
 template <typename Graph>
 class Component
 {
@@ -28,7 +32,6 @@ private:
             if (!visited[i])
             {
                 dfs(i);
-                dotCount++;
             }
         }
     }
@@ -52,6 +55,7 @@ public:
             if (!visited[i])
             {
                 dfs(i);
+                dotCount++;
             }
         }
     }
