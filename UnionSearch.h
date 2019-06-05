@@ -49,11 +49,14 @@ public:
     virtual void unionGroup(int pIndex, int qIndex) = 0;
 };
 
+/**
+ * 路径搜索的并查集，路径优化下，每个节点都会指向其所在分组的父节点，由于路径优化，每个节点都会指向该条路径下的根节点
+ * @tparam T
+ */
 template <class T>
 class PathUnion : public IUnion<T> {
 private:
-//    T *mElement = nullptr;
-//    int mCount = 0;
+    // 保存每个分组的子节点个数为1
     int* mRank = nullptr;
 
 public:
@@ -73,6 +76,11 @@ public:
         }
     }
 
+    /**
+     * 获取指定节点的分组号
+     * @param index
+     * @return
+     */
     T searchGroup(int index) override
     {
         // 由于每个元素其存储的是该分组所在位置的上一级元素索引
@@ -87,6 +95,7 @@ public:
 //
 //        return index;
 
+        // 因为是路径优化，所以在获取分组号的时候，会不断的更新每个节点的父节点索引，使每个分组的深度不会太深
         if (index != this->mElement[index])
         {
             this->mElement[index] = searchGroup(this->mElement[index]);
@@ -100,11 +109,22 @@ public:
 //        this->mElement[index] = group;
 //    }
 
+    /**
+     * 判断两个节点之间是否是出于同一分组
+     * @param pIndex
+     * @param qIndex
+     * @return
+     */
     bool isConnect(int pIndex, int qIndex) override
     {
         return this->searchGroup(pIndex) == this->searchGroup(qIndex);
     }
 
+    /**
+     * 设置两个节点为同一个分组，路径优化下，层数分组内节点数少的分组会获取另一个节点
+     * @param pIndex
+     * @param qIndex
+     */
     void unionGroup(int pIndex, int qIndex) override
     {
         /**
@@ -139,6 +159,10 @@ public:
     }
 };
 
+/**
+ * Rank优化并查集
+ * @tparam T
+ */
 template <class T>
 class RankUnion : public IUnion<T> {
 private:
@@ -353,6 +377,7 @@ public:
             return;
         }
 
+        // 更新分组信息，另一个分组的分组号会全部的更新
         for (int i = 0; i < this->mCount; ++i)
         {
             if (searchGroup(i) == pGroup)
