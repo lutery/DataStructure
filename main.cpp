@@ -12,6 +12,7 @@
 #include "SparseGraph.h"
 #include "DenseGraph.h"
 #include "RenderGraph.h"
+#include "Path.h"
 
 int generatorRnage(int min, int max)
 {
@@ -454,6 +455,24 @@ void testRenderGraph()
     std::cout << "*******************RenderGraph*******************" << std::endl;
 }
 
+void testPath()
+{
+    std::cout << "*******************test Path*******************" << std::endl;
+
+    std::string filename2 = "../testG2.txt";
+    std::cout << "filename is " << filename2 << std::endl;
+    SparseGraph sparseGraph1(7, false);
+    RenderGraph<SparseGraph>::readGraph(sparseGraph1, filename2);
+    sparseGraph1.show();
+    std::cout << std::endl;
+
+    Path<SparseGraph> dfsPath(sparseGraph1, 0);
+    std::cout << "DFS : ";
+    dfsPath.showPath(6);
+
+    std::cout << "*******************test Path*******************" << std::endl;
+}
+
 int main()
 {
     std::cout << "Hello, World!" << std::endl;
@@ -466,6 +485,7 @@ int main()
     testSparseGraph();
     testDenseGraph();
     testRenderGraph();
+    testPath();
 
 //    const int heapLength = 10;
 //    const int insertLength = 10;
