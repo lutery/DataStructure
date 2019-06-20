@@ -13,6 +13,7 @@
 #include "DenseGraph.h"
 #include "RenderGraph.h"
 #include "Path.h"
+#include "EditDistance.h"
 
 int generatorRnage(int min, int max)
 {
@@ -477,43 +478,20 @@ int main()
 {
     std::cout << "Hello, World!" << std::endl;
 
-    testRandomArr();
-    testNearOrderArr();
-    testBinarySearch();
-    testUnionSearch();
-    testTopN();
-    testSparseGraph();
-    testDenseGraph();
-    testRenderGraph();
-    testPath();
+//    testRandomArr();
+//    testNearOrderArr();
+//    testBinarySearch();
+//    testUnionSearch();
+//    testTopN();
+//    testSparseGraph();
+//    testDenseGraph();
+//    testRenderGraph();
+//    testPath();
 
-//    const int heapLength = 10;
-//    const int insertLength = 10;
-//    MaxHeap<int> maxHeap{heapLength};
-//    std::cout << maxHeap.size() << std::endl;
-//
-//    srand(time(NULL));
-//    for (int i = 0; i < insertLength; ++i)
-//    {
-//        maxHeap.insert(rand() % 1000);
-//    }
-//
-//    maxHeap.testPrint();
-//
-//    int maxArray[insertLength];
-//    memset(maxArray, 0, insertLength);
-//    int indexMaxArray = 0;
-//
-//    while (!maxHeap.isEmpty())
-//    {
-//        int current = maxHeap.extractMax();
-//        maxArray[indexMaxArray++] = current;
-//        std::cout << current << " ";
-//    }
-//
-//    std::cout << std::endl << "sort " << (SortTestHelper::checkSortBTS<int>(maxArray, insertLength) ? "success" : "failed") << std::endl;
+    auto s1 = "sunday";
+    auto s2 = "saturday";
 
-
+    std::cout << "The Edit Distance of " << EditDistance::editDistDP(s1, s2);
 
     return 0;
 }
