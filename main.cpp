@@ -14,6 +14,7 @@
 #include "RenderGraph.h"
 #include "Path.h"
 #include "EditDistance.h"
+#include "ShortPathGraph.h"
 
 int generatorRnage(int min, int max)
 {
@@ -471,6 +472,10 @@ void testPath()
     std::cout << "DFS : ";
     dfsPath.showPath(6);
 
+    ShortPathGraph<SparseGraph> bfs(sparseGraph1, 0);
+    std::cout << "BFS : ";
+    bfs.showPath(6);
+
     std::cout << "*******************test Path*******************" << std::endl;
 }
 
@@ -486,12 +491,12 @@ int main()
 //    testSparseGraph();
 //    testDenseGraph();
 //    testRenderGraph();
-//    testPath();
+    testPath();
 
-    auto s1 = "sunday";
-    auto s2 = "saturday";
-
-    std::cout << "The Edit Distance of " << EditDistance::editDistDP(s1, s2);
+//    auto s1 = "sunday";
+//    auto s2 = "saturday";
+//
+//    std::cout << "The Edit Distance of " << EditDistance::editDistDP(s1, s2);
 
     return 0;
 }
