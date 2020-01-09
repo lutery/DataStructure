@@ -15,6 +15,7 @@
 #include "Path.h"
 #include "EditDistance.h"
 #include "ShortPathGraph.h"
+#include "BFCompare.h"
 
 int generatorRnage(int min, int max)
 {
@@ -497,6 +498,13 @@ int main()
 //    auto s2 = "saturday";
 //
 //    std::cout << "The Edit Distance of " << EditDistance::editDistDP(s1, s2);
+
+    std::string a = "abcddecf";
+    std::string b = "dec";
+
+    int index = BFCompare::index(a, b, 0);
+
+    std::cout << "index is " << index << std::endl;
 
     return 0;
 }
